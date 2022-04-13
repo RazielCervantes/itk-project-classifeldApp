@@ -27,12 +27,11 @@ class CheckImage extends StatelessWidget {
         backgroundColor: Colors.black,
         body: Center(
           child: Container(
-            height: 300,
+            height: 500,
             width: double.infinity,
-            color: Colors.amber,
             child: Image.asset(
-              "images/producto3.jpg",
-              fit: BoxFit.fitHeight,
+              "images/apple-macbook-pro-m1.jpg",
+              fit: BoxFit.fitWidth,
             ),
           ),
         ),

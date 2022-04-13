@@ -5,36 +5,31 @@ import 'package:itk_project_classified_app/screens/Edit-Ad7.dart';
 
 List<dynamic> TheProducts3 = [
   {
-    "product": "AirPods",
-    "cost": "999",
-    "contact": "8 ",
-    "time": "12",
-    "Image": "images/producto3.jpg",
-    "description": "its an airpod"
+    "product": "Samsung For sale",
+    "cost": "12000.0",
+    "contact": "84253543",
+    "time": "8",
+    "Image": "images/mobile_3.jpg",
+    "description":
+        "its a celular. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
   },
   {
-    "product": "Imac",
-    "cost": "11900",
-    "contact": "10 ",
-    "time": "12",
-    "Image": "images/producto4.jpg",
-    "description": "its a mac"
+    "product": "iPhone For Sale",
+    "cost": "33000.0",
+    "contact": "84253",
+    "time": "18",
+    "Image": "images/mobile_1.jpg",
+    "description":
+        "its a Iphone. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
   },
   {
-    "product": "Yeti Mic",
-    "cost": "876",
-    "contact": "15 ",
-    "time": "12",
-    "Image": "images/producto6.jpg",
-    "description": "its a mic"
-  },
-  {
-    "product": "Alexa 4th Gen",
-    "cost": "600",
-    "contact": "14",
-    "time": "12",
-    "Image": "images/producto7.jpg",
-    "description": "its an assistan"
+    "product": "Used Macbook Pro for sale",
+    "cost": "45000.0",
+    "contact": "+919ii643210 ",
+    "time": "18",
+    "Image": "images/apple-macbook-pro-m1.jpg",
+    "description":
+        "its a mac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit. "
   },
 ];
 
@@ -90,7 +85,7 @@ Widget buildproduct(Map TheProducts3) {
               children: [
                 Text(
                   TheProducts3["product"],
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                 ),
                 Row(
                   children: [
@@ -101,7 +96,7 @@ Widget buildproduct(Map TheProducts3) {
                     Text(
                       TheProducts3["time"] + "days ago",
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 10),
                     ),
                   ],
                 ),
@@ -109,7 +104,7 @@ Widget buildproduct(Map TheProducts3) {
                   "\$" + TheProducts3["cost"],
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.orange),
                 ),
               ],

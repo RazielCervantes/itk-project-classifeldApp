@@ -5,9 +5,7 @@ import 'package:itk_project_classified_app/global.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/widgets/logging_image.dart';
 import 'package:itk_project_classified_app/screens/New-User2.dart';
-import 'package:itk_project_classified_app/screens/Edit-Profile4.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:itk_project_classified_app/screens/index.dart';
+
 
 class Loging extends StatelessWidget {
   Loging({Key? key}) : super(key: key);

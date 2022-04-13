@@ -9,60 +9,57 @@ PublishProducts data = PublishProducts();
 
 List<dynamic> TheProducts2 = [
   {
-    "product": "Samsung A1",
-    "cost": "400",
-    "contact": "2",
-    "Image": "images/producto1.jpg",
-    "description": "its a cellular"
+    "product": "Samsung For sale",
+    "cost": "12000.0",
+    "contact": "84253",
+    "time": "8",
+    "Image": "images/mobile_3.jpg",
+    "description":
+        "its a celular. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
   },
   {
-    "product": "Laptop",
+    "product": "iPhone For Sale",
+    "cost": "33000.0",
+    "contact": "84253",
+    "time": "18",
+    "Image": "images/mobile_1.jpg",
+    "description":
+        "its a Iphone. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
+  },
+  {
+    "product": "maruti swift 2020 for sale",
     "cost": "999",
-    "time": "5",
-    "Image": "images/2.jpg",
-    "description": "its a laptop"
+    "contact": "300000.0 ",
+    "time": "18",
+    "Image": "images/car_2.jpg",
+    "description":
+        "its an swift. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit. "
   },
   {
-    "product": "AirPods",
-    "cost": "999",
-    "contact": "8 ",
-    "Image": "images/producto3.jpg",
-    "description": "its an airpod"
+    "product": "Farm Land near Chennai",
+    "cost": "120000.0",
+    "contact": "104245 ",
+    "Image": "images/hourse_1.png",
+    "description":
+        "its a farm. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
   },
   {
-    "product": "Imac",
-    "cost": "11900",
-    "contact": "10 ",
-    "Image": "images/producto4.jpg",
-    "description": "its a mac"
+    "product": "Used Benz for Sale",
+    "cost": "500000.0",
+    "contact": "1432422",
+    "time": "18",
+    "Image": "images/car_1.jpg",
+    "description":
+        "its a car. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit. "
   },
   {
-    "product": "moto G5",
-    "cost": "200",
-    "contact": "12",
-    "Image": "images/producto5.jpg",
-    "description": "its a cellular"
-  },
-  {
-    "product": "Yeti Mic",
-    "cost": "876",
-    "contact": "15 ",
-    "Image": "images/producto6.jpg",
-    "description": "its a mic"
-  },
-  {
-    "product": "Alexa 4th Gen",
-    "cost": "600",
-    "contact": "14",
-    "Image": "images/producto7.jpg",
-    "description": "its an assistan"
-  },
-  {
-    "product": "LED Strip",
-    "cost": "223",
-    "contact": "20 ",
-    "Image": "images/producto8.jpg",
-    "description": "its a led"
+    "product": "Used Macbook Pro for sale",
+    "cost": "45000.0",
+    "contact": "14 ",
+    "time": "18",
+    "Image": "images/apple-macbook-pro-m1.jpg",
+    "description":
+        "its a mac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit. "
   },
 ];
 
@@ -94,8 +91,11 @@ class ListOfApps extends StatelessWidget {
           child: GridView.builder(
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, mainAxisSpacing: 4.0, crossAxisSpacing: 4.0),
-            itemCount: data.TheProducts.length,
+                crossAxisCount: 2,
+                mainAxisSpacing: 4.0,
+                crossAxisSpacing: 4.0,
+                childAspectRatio: 0.75),
+            itemCount: TheProducts2.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                   padding: const EdgeInsets.all(4.0),
@@ -128,13 +128,13 @@ Widget buildItemGrid(Map TheProducts2) {
           width: double.infinity,
           child: Image.asset(
             TheProducts2["Image"],
-            fit: BoxFit.cover,
+            fit: BoxFit.fitHeight,
           ),
         ),
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            height: 50,
+            height: 80,
             color: Colors.black.withOpacity(0.5),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,16 +149,22 @@ Widget buildItemGrid(Map TheProducts2) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      TheProducts2["product"],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
+                    Container(
+                      width: 160,
+                      child: Text(
+                        TheProducts2["product"],
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                     Text(
                       "\$ " + TheProducts2["cost"],
-                      style: TextStyle(color: Colors.orange, fontSize: 12),
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800),
                     ),
                   ],
                 ),

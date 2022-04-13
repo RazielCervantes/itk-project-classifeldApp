@@ -59,7 +59,13 @@ class newUser extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                       ),
                       onPressed: () {
-                        myvar.newusernamectrl = myvar.usernamectrl;
+                        // myvar.strg_usernamectrl = myvar.newusernamectrl.text;
+                        // myvar.strg_useremailctrl = myvar.newuseremailctrl.text;
+                        // myvar.strg_usermobilectrl =
+                        //     myvar.newusermobilectrl.text;
+                        // myvar.strg_userpasswordctrl =
+                        //     myvar.newuserpasswordctrl.text;
+
                         Get.to(ListOfApps());
                       },
                       style:

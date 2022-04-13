@@ -40,19 +40,21 @@ class EditProfile extends StatelessWidget {
                   ),
                 ),
                 myTextField(
-                  myControler: myvar.editnamectrl,
-                  myTextInput: TextInputType.name,
-                  title: myvar.usernamectrl.text,
-                ),
+                    myControler: myvar.editnamectrl,
+                    myTextInput: TextInputType.name,
+                    title: null,
+                    mmyHinttext: myvar.strg_usernamectrl),
                 myTextField(
                   myControler: myvar.editemailctrl,
                   myTextInput: TextInputType.emailAddress,
-                  title: "$myvar.usernamectrl",
+                  title: null,
+                  mmyHinttext: myvar.strg_useremailctrl,
                 ),
                 myTextField(
                   myControler: myvar.editmobilectrl,
                   myTextInput: TextInputType.number,
-                  title: "$myvar.usernamectrl",
+                  title: null,
+                  mmyHinttext: myvar.strg_usermobilectrl,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),

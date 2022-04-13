@@ -26,12 +26,12 @@ class CheckProd extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "here goes product name",
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 23),
+                "Used Macbook Pro for sale",
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 32),
               ),
               SizedBox(height: 8.0),
               Text(
-                "here goes price",
+                "45000.0",
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 14,
@@ -47,7 +47,7 @@ class CheckProd extends StatelessWidget {
                     height: 260,
                     width: double.infinity,
                     child: Image.asset(
-                      "images/producto3.jpg",
+                      "images/apple-macbook-pro-m1.jpg",
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -74,7 +74,7 @@ class CheckProd extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(Icons.timer_outlined),
-                          Text("here go the time")
+                          Text("14 days ago")
                         ],
                       ),
                     ),
@@ -84,7 +84,8 @@ class CheckProd extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 12),
                 child: Text(
-                  "here goes the description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu elit viverra, euismod risus in, luctus nunc. Integer non nisl vel tellus aliquet tincidunt non quis nisi. Cras et lobortis quam. Mauris eu ipsum sed enim congue tempus. Vivamus lacus mi, pellentesque ac ex sit amet, pellentesque dictum libero. ",
+                  "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger",
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
               SizedBox(

@@ -77,8 +77,8 @@ class EditAd extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.asset(
-                                "images/producto3.jpg",
-                                fit: BoxFit.cover,
+                                "images/apple-macbook-pro-m1.jpg",
+                                fit: BoxFit.contain,
                               ))),
                     ),
                     Padding(
@@ -92,8 +92,8 @@ class EditAd extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.asset(
-                                "images/producto3.jpg",
-                                fit: BoxFit.cover,
+                                "images/apple-macbook-pro-m1.jpg",
+                                fit: BoxFit.contain,
                               ))),
                     ),
                     Padding(
@@ -107,8 +107,8 @@ class EditAd extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.asset(
-                                "images/producto3.jpg",
-                                fit: BoxFit.cover,
+                                "images/apple-macbook-pro-m1.jpg",
+                                fit: BoxFit.contain,
                               ))),
                     ),
                   ],
@@ -116,17 +116,20 @@ class EditAd extends StatelessWidget {
                 myTextField(
                   myControler: myvar.editadtitle,
                   myTextInput: TextInputType.text,
-                  title: "Title",
+                  title: null,
+                  mmyHinttext: "Used Macbook Pro for sale",
                 ),
                 myTextField(
                   myControler: myvar.editadprice,
                   myTextInput: TextInputType.number,
-                  title: "Price",
+                  title: null,
+                  mmyHinttext: "45000.0",
                 ),
                 myTextField(
                   myControler: myvar.editadcontact,
                   myTextInput: TextInputType.number,
-                  title: "Contact Number",
+                  title: null,
+                  mmyHinttext: "+91988643210",
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
@@ -135,13 +138,15 @@ class EditAd extends StatelessWidget {
                     controller: myvar.editaddescription,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 70),
-                        labelText: "Description",
+                        labelText: null,
+                        hintText:
+                            "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger",
                         enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.grey, width: 2.0),
                         ),
                         labelStyle:
-                            TextStyle(fontSize: 22, color: Colors.grey)),
+                            TextStyle(fontSize: 20, color: Colors.grey)),
                   ),
                 ),
                 Padding(

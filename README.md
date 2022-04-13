@@ -1,16 +1,32 @@
-# itk_project_classified_app
+# SCREENSHOTS
 
-A new Flutter project.
 
-## Getting Started
+## PAGE1 loging
+![screen1](screenshots/Screenshot1_loging.png)
 
-This project is a starting point for a Flutter application.
+## PAGE2 new user
+![screen2](screenshots/Screenshot2_new_user.png)
 
-A few resources to get you started if this is your first Flutter project:
+## PAGE3 ads listing
+![screen3](screenshots/Screenshot3_ads_Listing.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## PAGE4 edit profile
+![screen4](screenshots/Screenshot4_edit_profile)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## PAGE5 my ads
+![screen5](screenshots/Screenshot5_my_ads.png)
+
+## PAGE6 create ad
+![screen6](screenshots/Screenshot6_create_ad.png)
+
+## PAGE7 edit ad
+![screen7](screenshots/Screenshot7_edit_ad.png)
+
+## PAGE8 check ad
+![screen8](screenshots/Screenshot8_check_product.png)
+
+## PAGE9 check image
+![screen9](screenshots/Screenshot9_check_image.png)
+
+## PAGE10 settings page
+![screen10](screenshots/Screenshot20_settings_page.png)

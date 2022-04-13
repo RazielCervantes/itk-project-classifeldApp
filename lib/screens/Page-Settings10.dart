@@ -3,9 +3,11 @@ import 'package:itk_project_classified_app/screens/Edit-Profile4.dart';
 import 'package:itk_project_classified_app/screens/My-Publish-Ads.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/widgets/buttonssettings.dart';
+import 'package:itk_project_classified_app/global.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  SettingsPage({Key? key}) : super(key: key);
+  DataTextField myvar = DataTextField();
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +39,10 @@ class SettingsPage extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("here goes name"),
+                      children: [
+                        Text(myvar.strg_usernamectrl),
                         Text(
-                          "here goes number",
+                          myvar.strg_usermobilectrl,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
