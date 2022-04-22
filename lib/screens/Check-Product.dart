@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:itk_project_classified_app/screens/Ads.listing.dart';
-import 'package:itk_project_classified_app/screens/Check-Image.dart';
+import 'package:itk_project_classified_app/screens/ads_listing.dart';
+import 'package:itk_project_classified_app/screens/check-Image.dart';
 
 class CheckProd extends StatelessWidget {
-  const CheckProd({Key? key}) : super(key: key);
+  final String product;
+  final String cost;
+  final String time;
+  final String ImageUri;
+  final String description;
+
+  const CheckProd({
+    Key? key,
+    required this.product,
+    required this.cost,
+    required this.ImageUri,
+    required this.time,
+    required this.description,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +39,12 @@ class CheckProd extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Used Macbook Pro for sale",
+                "$product",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 32),
               ),
               SizedBox(height: 8.0),
               Text(
-                "45000.0",
+                "$cost",
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 14,
@@ -41,13 +54,18 @@ class CheckProd extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(CheckImage());
+                    // Get.to(CheckImage(imageProd: ImageUri));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CheckImage(imageProd: ImageUri)));
                   },
                   child: Container(
                     height: 260,
                     width: double.infinity,
                     child: Image.asset(
-                      "images/apple-macbook-pro-m1.jpg",
+                      ImageUri,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -74,7 +92,7 @@ class CheckProd extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(Icons.timer_outlined),
-                          Text("14 days ago")
+                          Text(time.toString())
                         ],
                       ),
                     ),
@@ -84,7 +102,7 @@ class CheckProd extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 12),
                 child: Text(
-                  "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger",
+                  "$description",
                   style: TextStyle(fontSize: 18),
                 ),
               ),

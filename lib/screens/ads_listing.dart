@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:itk_project_classified_app/widgets/List-Product.dart';
 import 'package:get/get.dart';
-import 'package:itk_project_classified_app/screens/Create-Ad.dart';
-import 'package:itk_project_classified_app/screens/Check-Product.dart';
-import 'package:itk_project_classified_app/screens/Page-Settings10.dart';
+import 'package:itk_project_classified_app/screens/create-Ad.dart';
+import 'package:itk_project_classified_app/screens/check-Product.dart';
+import 'package:itk_project_classified_app/screens/page-Settings.dart';
 
 PublishProducts data = PublishProducts();
 
@@ -39,6 +39,7 @@ List<dynamic> TheProducts2 = [
     "product": "Farm Land near Chennai",
     "cost": "120000.0",
     "contact": "104245 ",
+    "time": "18",
     "Image": "images/hourse_1.png",
     "description":
         "its a farm. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
@@ -59,12 +60,23 @@ List<dynamic> TheProducts2 = [
     "time": "18",
     "Image": "images/apple-macbook-pro-m1.jpg",
     "description":
-        "its a mac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit. "
+        "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger"
   },
 ];
 
 class ListOfApps extends StatelessWidget {
-  const ListOfApps({Key? key}) : super(key: key);
+  // final String product;
+  // final double cost;
+  // final double time;
+  // final String Image;
+
+  const ListOfApps({
+    Key? key,
+    // required this.Image,
+    // required this.product,
+    // required this.cost,
+    // required this.time,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +106,7 @@ class ListOfApps extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 4.0,
                 crossAxisSpacing: 4.0,
-                childAspectRatio: 0.75),
+                childAspectRatio: 0.8),
             itemCount: TheProducts2.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
@@ -119,7 +131,13 @@ class ListOfApps extends StatelessWidget {
 Widget buildItemGrid(Map TheProducts2) {
   return GestureDetector(
     onTap: () {
-      Get.to(CheckProd());
+      Get.to(CheckProd(
+        product: TheProducts2["product"],
+        cost: TheProducts2["cost"],
+        ImageUri: TheProducts2["Image"],
+        time: TheProducts2["time"],
+        description: TheProducts2["description"],
+      ));
     },
     child: Stack(
       children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:itk_project_classified_app/screens/Edit-Profile4.dart';
-import 'package:itk_project_classified_app/screens/My-Publish-Ads.dart';
+import 'package:itk_project_classified_app/controllers/mycontroller.dart';
+import 'package:itk_project_classified_app/screens/edit-Profile.dart';
+import 'package:itk_project_classified_app/screens/my-Publish-Ads.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/widgets/buttonssettings.dart';
 import 'package:itk_project_classified_app/global.dart';
@@ -8,6 +9,7 @@ import 'package:itk_project_classified_app/global.dart';
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
   DataTextField myvar = DataTextField();
+  final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,8 @@ class SettingsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(myvar.strg_usernamectrl),
+                        Obx(() =>
+                            Text(_myGlbControllers.userNameCtr.toString())),
                         Text(
                           myvar.strg_usermobilectrl,
                           style: TextStyle(color: Colors.grey),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:itk_project_classified_app/screens/Ads.listing.dart';
+import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
 import 'package:itk_project_classified_app/global.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/widgets/logging_image.dart';
-import 'package:itk_project_classified_app/screens/Login_screen_screen.dart';
+import 'package:itk_project_classified_app/screens/login-screen-screen.dart';
 
 class newUser extends StatelessWidget {
   newUser({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:itk_project_classified_app/screens/New-User2.dart';
-import 'package:itk_project_classified_app/screens/Edit-Ad7.dart';
+import 'package:itk_project_classified_app/screens/edit-Ad.dart';
+import 'package:itk_project_classified_app/screens/new-User.dart';
 
 List<dynamic> TheProducts3 = [
   {
@@ -29,7 +29,7 @@ List<dynamic> TheProducts3 = [
     "time": "18",
     "Image": "images/apple-macbook-pro-m1.jpg",
     "description":
-        "its a mac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit. "
+        "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger"
   },
 ];
 
@@ -67,7 +67,12 @@ class Ads extends StatelessWidget {
 Widget buildproduct(Map TheProducts3) {
   return GestureDetector(
     onTap: () {
-      Get.to(EditAd());
+      Get.to(EditAd(
+          productName: TheProducts3["product"],
+          productCost: TheProducts3["contact"],
+          number: TheProducts3["cost"],
+          productDescrip: TheProducts3["description"],
+          firstImage: TheProducts3["Image"]));
     },
     child: Padding(
       padding: EdgeInsets.all(3.0),

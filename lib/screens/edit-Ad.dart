@@ -4,7 +4,19 @@ import 'package:itk_project_classified_app/global.dart';
 import 'package:itk_project_classified_app/widgets/List-Product.dart';
 
 class EditAd extends StatelessWidget {
-  EditAd({Key? key}) : super(key: key);
+  final String productName;
+  final String productCost;
+  final String number;
+  final String productDescrip;
+  final String firstImage;
+  EditAd({
+    Key? key,
+    required this.productName,
+    required this.productCost,
+    required this.number,
+    required this.productDescrip,
+    required this.firstImage,
+  }) : super(key: key);
 
   DataTextField myvar = DataTextField();
   PublishProducts data = PublishProducts();
@@ -77,7 +89,7 @@ class EditAd extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.asset(
-                                "images/apple-macbook-pro-m1.jpg",
+                                "$firstImage",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -92,7 +104,7 @@ class EditAd extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.asset(
-                                "images/apple-macbook-pro-m1.jpg",
+                                "$firstImage",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -107,7 +119,7 @@ class EditAd extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.asset(
-                                "images/apple-macbook-pro-m1.jpg",
+                                "$firstImage",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -117,19 +129,19 @@ class EditAd extends StatelessWidget {
                   myControler: myvar.editadtitle,
                   myTextInput: TextInputType.text,
                   title: null,
-                  mmyHinttext: "Used Macbook Pro for sale",
+                  mmyHinttext: "$productName",
                 ),
                 myTextField(
                   myControler: myvar.editadprice,
                   myTextInput: TextInputType.number,
                   title: null,
-                  mmyHinttext: "45000.0",
+                  mmyHinttext: "$productCost",
                 ),
                 myTextField(
                   myControler: myvar.editadcontact,
                   myTextInput: TextInputType.number,
                   title: null,
-                  mmyHinttext: "+91988643210",
+                  mmyHinttext: "$number",
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
@@ -139,8 +151,7 @@ class EditAd extends StatelessWidget {
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 70),
                         labelText: null,
-                        hintText:
-                            "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger",
+                        hintText: "$productDescrip",
                         enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.grey, width: 2.0),

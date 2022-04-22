@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:itk_project_classified_app/global.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
-import 'package:itk_project_classified_app/screens/Login_screen_screen.dart';
-import 'package:itk_project_classified_app/screens/My-Publish-Ads.dart';
+import 'package:itk_project_classified_app/global.dart';
+import 'package:get/get.dart';
+import 'package:itk_project_classified_app/widgets/logging_image.dart';
+import 'package:itk_project_classified_app/screens/new-User.dart';
+import 'package:itk_project_classified_app/screens/ads_listing.dart';
 
-class EditProfile extends StatelessWidget {
-  EditProfile({Key? key}) : super(key: key);
+class Loging extends StatelessWidget {
+  Loging({Key? key}) : super(key: key);
 
   DataTextField myvar = DataTextField();
 
@@ -18,43 +19,23 @@ class EditProfile extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              "Edit Profile",
-              style: TextStyle(color: Colors.white),
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.black,
-          ),
           body: SingleChildScrollView(
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.all(22),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage("images/profilepicture.jpg"),
-                      radius: 60,
-                    ),
-                  ),
+                const LogingImage(),
+                const SizedBox(
+                  height: 12,
                 ),
                 myTextField(
-                    myControler: myvar.editnamectrl,
-                    myTextInput: TextInputType.name,
-                    title: null,
-                    mmyHinttext: myvar.strg_usernamectrl),
-                myTextField(
-                  myControler: myvar.editemailctrl,
+                  myControler: myvar.useremailctrl,
                   myTextInput: TextInputType.emailAddress,
-                  title: null,
-                  mmyHinttext: myvar.strg_useremailctrl,
+                  title: "Email Address",
                 ),
                 myTextField(
-                  myControler: myvar.editmobilectrl,
-                  myTextInput: TextInputType.number,
-                  title: null,
-                  mmyHinttext: myvar.strg_usermobilectrl,
+                  myControler: myvar.userpasswordctrl,
+                  myTextInput: TextInputType.visiblePassword,
+                  isPassword: true,
+                  title: "Password",
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -63,14 +44,14 @@ class EditProfile extends StatelessWidget {
                     width: 350,
                     child: ElevatedButton(
                       child: const Text(
-                        "Update Profile",
+                        "Login",
                         style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
                       onPressed: () {
-                        // Get.to();
+                        Get.to(ListOfApps());
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),
@@ -79,14 +60,14 @@ class EditProfile extends StatelessWidget {
                 ),
                 TextButton(
                   child: Text(
-                    "Logout",
+                    "Don't have any account?",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.orange[900]),
                   ),
                   onPressed: () {
-                    Get.to(Loging());
+                    Get.to(newUser());
                   },
-                )
+                ),
               ],
             ),
           ),
