@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
