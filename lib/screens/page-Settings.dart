@@ -4,11 +4,15 @@ import 'package:itk_project_classified_app/screens/edit-Profile.dart';
 import 'package:itk_project_classified_app/screens/my-Publish-Ads.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/widgets/buttonssettings.dart';
-import 'package:itk_project_classified_app/global.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   SettingsPage({Key? key}) : super(key: key);
-  DataTextField myvar = DataTextField();
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
 
   @override
@@ -32,10 +36,12 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     Container(
                       padding: EdgeInsets.fromLTRB(12, 15, 16, 12),
-                      child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage("images/profilepicture.jpg"),
-                        radius: 24,
+                      child: Obx(
+                        () => CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              _myGlbControllers.userProfileImagectr.value),
+                          radius: 24,
+                        ),
                       ),
                     ),
                     Column(
@@ -44,9 +50,11 @@ class SettingsPage extends StatelessWidget {
                       children: [
                         Obx(() =>
                             Text(_myGlbControllers.userNameCtr.toString())),
-                        Text(
-                          myvar.strg_usermobilectrl,
-                          style: TextStyle(color: Colors.grey),
+                        Obx(
+                          () => Text(
+                            _myGlbControllers.userProfileMobileCtr.toString(),
+                            style: TextStyle(color: Colors.grey),
+                          ),
                         ),
                       ],
                     ),

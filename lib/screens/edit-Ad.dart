@@ -1,14 +1,24 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
-import 'package:itk_project_classified_app/global.dart';
 import 'package:itk_project_classified_app/widgets/List-Product.dart';
 
-class EditAd extends StatelessWidget {
+import '../util/constans.dart';
+// import 'package:itk_project_classified_app/global.dart';
+
+class EditAd extends StatefulWidget {
   final String productName;
   final String productCost;
   final String number;
   final String productDescrip;
   final String firstImage;
+  final String productid;
   EditAd({
     Key? key,
     required this.productName,
@@ -16,10 +26,86 @@ class EditAd extends StatelessWidget {
     required this.number,
     required this.productDescrip,
     required this.firstImage,
+    required this.productid,
   }) : super(key: key);
 
-  DataTextField myvar = DataTextField();
+  @override
+  State<EditAd> createState() => _EditAdState();
+}
+
+class _EditAdState extends State<EditAd> {
+  // DataTextField myvar = DataTextField();
   PublishProducts data = PublishProducts();
+
+  late final TextEditingController _editAdTitleCtrl =
+      TextEditingController(text: this.widget.productName.toString());
+
+  late final TextEditingController _editAdPriceCtrl =
+      TextEditingController(text: this.widget.productCost.toString());
+
+  late final TextEditingController _editAdContactCtrl =
+      TextEditingController(text: this.widget.number.toString());
+
+  late final TextEditingController _editAdDescriptionCtrl =
+      TextEditingController(text: this.widget.productDescrip.toString());
+
+  final box = GetStorage();
+
+  var _imagesURL;
+
+  PickMultipleImages() async {
+    var images = await ImagePicker().pickMultiImage();
+    if (images!.isNotEmpty) {
+      //upload images
+      var request = http.MultipartRequest(
+          "POST", Uri.parse(constans().apiURl + '/upload/photos'));
+      images.forEach((images) async {
+        request.files
+            .add(await http.MultipartFile.fromPath('photos', images.path));
+      });
+      var res = await request.send();
+      var respData = await res.stream.toBytes();
+      var respStr = String.fromCharCodes(respData);
+      var jsonObj = json.decode(respStr);
+      print(jsonObj["data"]["path"]);
+      setState(() {
+        _imagesURL = (jsonObj["data"]["path"]);
+      });
+    } else {
+      print("no images picked");
+    }
+  }
+
+  Future adEdit() async {
+    try {
+      var token = box.read("token");
+      var respon = await http.patch(
+        Uri.parse(constans().apiURl + '/ads/${widget.productid}'),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({
+          "title": _editAdTitleCtrl.text,
+          "price": _editAdPriceCtrl.text,
+          "mobile": _editAdContactCtrl.text,
+          "description": _editAdDescriptionCtrl.text,
+          "images": _imagesURL,
+        }),
+      );
+
+      var _request = jsonDecode(respon.body);
+      var temp = jsonDecode(respon.body);
+      if (temp["status"] == true) {
+        Get.to(ListOfApps());
+      }
+
+      return _request;
+    } catch (error) {
+      return error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +136,9 @@ class EditAd extends StatelessWidget {
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
                             side: BorderSide(width: 1.0, color: Colors.grey)),
-                        onPressed: () {},
+                        onPressed: () {
+                          PickMultipleImages();
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,8 +176,8 @@ class EditAd extends StatelessWidget {
                           ),
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
-                              child: Image.asset(
-                                "$firstImage",
+                              child: Image.network(
+                                "${widget.firstImage}",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -103,8 +191,8 @@ class EditAd extends StatelessWidget {
                           ),
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
-                              child: Image.asset(
-                                "$firstImage",
+                              child: Image.network(
+                                "${widget.firstImage}",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -118,40 +206,32 @@ class EditAd extends StatelessWidget {
                           ),
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
-                              child: Image.asset(
-                                "$firstImage",
+                              child: Image.network(
+                                "${widget.firstImage}",
                                 fit: BoxFit.contain,
                               ))),
                     ),
                   ],
                 ),
                 myTextField(
-                  myControler: myvar.editadtitle,
+                  myControler: _editAdTitleCtrl,
                   myTextInput: TextInputType.text,
-                  title: null,
-                  mmyHinttext: "$productName",
                 ),
                 myTextField(
-                  myControler: myvar.editadprice,
+                  myControler: _editAdPriceCtrl,
                   myTextInput: TextInputType.number,
-                  title: null,
-                  mmyHinttext: "$productCost",
                 ),
                 myTextField(
-                  myControler: myvar.editadcontact,
+                  myControler: _editAdContactCtrl,
                   myTextInput: TextInputType.number,
-                  title: null,
-                  mmyHinttext: "$number",
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
                     keyboardType: TextInputType.text,
-                    controller: myvar.editaddescription,
+                    controller: _editAdDescriptionCtrl,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 70),
-                        labelText: null,
-                        hintText: "$productDescrip",
                         enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.grey, width: 2.0),
@@ -173,7 +253,9 @@ class EditAd extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        adEdit();
+                      },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),
                     ),

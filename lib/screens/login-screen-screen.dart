@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
-import 'package:itk_project_classified_app/global.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:itk_project_classified_app/controllers/mycontroller.dart';
+import 'package:itk_project_classified_app/screens/testing.dart';
+import '../util/constans.dart';
+import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
 import 'package:itk_project_classified_app/widgets/logging_image.dart';
 import 'package:itk_project_classified_app/screens/new-User.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
@@ -9,7 +15,53 @@ import 'package:itk_project_classified_app/screens/ads_listing.dart';
 class Loging extends StatelessWidget {
   Loging({Key? key}) : super(key: key);
 
-  DataTextField myvar = DataTextField();
+  final MyGlbControllers _glbControllers = Get.put(MyGlbControllers());
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _passwordCtrl = TextEditingController();
+
+  final box = GetStorage();
+
+  //loggin
+
+  Future logginUser() async {
+    try {
+      var respon = await http.post(
+        Uri.parse(constans().apiURl + '/auth/login'),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode({
+          "email": _emailCtrl.text,
+          "password": _passwordCtrl.text,
+        }),
+      );
+
+      var _request = jsonDecode(respon.body);
+      var temp = jsonDecode(respon.body);
+      if (temp["status"] == true) {
+        box.write("token", temp["data"]["token"]);
+        box.write("idUser", temp["data"]["user"]["_id"]);
+        Get.offAll(ListOfApps());
+        // Get.offAll(testingScreen());
+      }
+      // print(respon.statusCode.toString());
+      // print(_request);
+      // var _statusCodeResques = respon.statusCode;
+      // if (_statusCodeResques == 200) {
+      // return "success";
+      // }
+
+      // print(_statusCodeResques.toString());
+      // print(respon.body.toString());
+      // debugPrint(respon.body);
+
+      return _request;
+    } catch (error) {
+      // print(error);
+      return error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +79,12 @@ class Loging extends StatelessWidget {
                   height: 12,
                 ),
                 myTextField(
-                  myControler: myvar.useremailctrl,
+                  myControler: _emailCtrl,
                   myTextInput: TextInputType.emailAddress,
                   title: "Email Address",
                 ),
                 myTextField(
-                  myControler: myvar.userpasswordctrl,
+                  myControler: _passwordCtrl,
                   myTextInput: TextInputType.visiblePassword,
                   isPassword: true,
                   title: "Password",
@@ -50,8 +102,49 @@ class Loging extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
-                      onPressed: () {
-                        Get.to(ListOfApps());
+
+                      // what is goint to do the button uf we press it
+                      onPressed: () async {
+                        var userinfo = await logginUser();
+
+                        if (_emailCtrl.text.trim() == '' ||
+                            _passwordCtrl.text.trim() == "") {
+                          showDialog(
+                              context: context,
+                              builder: (contex) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text("Please Fill Out All Fields"),
+                                    actions: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.close),
+                                        onPressed: () {
+                                          Navigator.pop(contex);
+                                        },
+                                      )
+                                    ],
+                                  ));
+                        } else if (userinfo["status"] != true) {
+                          showDialog(
+                              context: context,
+                              builder: (contex) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text(userinfo["message"]),
+                                    actions: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.close),
+                                        onPressed: () {
+                                          Navigator.pop(contex);
+                                        },
+                                      )
+                                    ],
+                                  ));
+
+                          // Get.to(ListOfApps());
+                          // _glbControllers.userTokenCtr.value =
+                          //     userinfo["data"]["token"];
+
+                          // print(_glbControllers.userToken);
+                        }
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),

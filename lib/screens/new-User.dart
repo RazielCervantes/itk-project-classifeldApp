@@ -1,15 +1,56 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
-import 'package:itk_project_classified_app/global.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/widgets/logging_image.dart';
 import 'package:itk_project_classified_app/screens/login-screen-screen.dart';
 
-class newUser extends StatelessWidget {
+import '../util/constans.dart';
+
+class newUser extends StatefulWidget {
   newUser({Key? key}) : super(key: key);
 
-  DataTextField myvar = DataTextField();
+  @override
+  State<newUser> createState() => _newUserState();
+}
+
+class _newUserState extends State<newUser> {
+  final TextEditingController _newUserNameCtrl = TextEditingController();
+
+  final TextEditingController _newUserEmailCtrl = TextEditingController();
+
+  final TextEditingController _newUserNumberCtrl = TextEditingController();
+
+  final TextEditingController _newUserPasswordCtrl = TextEditingController();
+
+  Future registerNewUsers() async {
+    try {
+      var respon = await http.post(
+        Uri.parse(constans().apiURl + '/auth/register'),
+        headers: {
+          'Content-type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode({
+          "name": _newUserNameCtrl.text,
+          "email": _newUserEmailCtrl.text,
+          "password": _newUserPasswordCtrl.text,
+          "mobile": _newUserNumberCtrl.text
+        }),
+      );
+
+      var _request = jsonDecode(respon.body);
+      return _request;
+      // print(_request);
+      // print(respon.statusCode.toString());
+    } catch (error) {
+      // print(error);
+      return error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +66,22 @@ class newUser extends StatelessWidget {
                 LogingImage(),
                 SizedBox(height: 12),
                 myTextField(
-                  myControler: myvar.newusernamectrl,
+                  myControler: _newUserNameCtrl,
                   myTextInput: TextInputType.name,
                   title: "Full Name",
                 ),
                 myTextField(
-                  myControler: myvar.newuseremailctrl,
+                  myControler: _newUserEmailCtrl,
                   myTextInput: TextInputType.emailAddress,
                   title: "Email Address",
                 ),
                 myTextField(
-                  myControler: myvar.newusermobilectrl,
+                  myControler: _newUserNumberCtrl,
                   myTextInput: TextInputType.number,
                   title: "Mobile Number",
                 ),
                 myTextField(
-                  myControler: myvar.newuserpasswordctrl,
+                  myControler: _newUserPasswordCtrl,
                   myTextInput: TextInputType.visiblePassword,
                   title: "Password",
                   isPassword: true,
@@ -58,15 +99,45 @@ class newUser extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
-                      onPressed: () {
-                        // myvar.strg_usernamectrl = myvar.newusernamectrl.text;
-                        // myvar.strg_useremailctrl = myvar.newuseremailctrl.text;
-                        // myvar.strg_usermobilectrl =
-                        //     myvar.newusermobilectrl.text;
-                        // myvar.strg_userpasswordctrl =
-                        //     myvar.newuserpasswordctrl.text;
+                      onPressed: () async {
+                        var newUserinfo = await registerNewUsers();
 
-                        Get.to(ListOfApps());
+                        if (_newUserNameCtrl.text.trim() == '' ||
+                            _newUserEmailCtrl.text.trim() == "" ||
+                            _newUserNumberCtrl.text.trim() == '' ||
+                            _newUserPasswordCtrl.text.trim() == "") {
+                          showDialog(
+                              context: context,
+                              builder: (contex) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text("Please Fill Out All Fields"),
+                                    actions: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.close),
+                                        onPressed: () {
+                                          Navigator.pop(contex);
+                                        },
+                                      )
+                                    ],
+                                  ));
+                        } else if (newUserinfo["status"] == true) {
+                          Get.to(ListOfApps());
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (contex) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text(newUserinfo["message"]),
+                                    actions: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.close),
+                                        onPressed: () {
+                                          Navigator.pop(contex);
+                                        },
+                                      )
+                                    ],
+                                  ));
+                        }
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),

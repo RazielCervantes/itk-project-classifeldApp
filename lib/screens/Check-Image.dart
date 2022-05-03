@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:itk_project_classified_app/screens/check-Product.dart';
 
 class CheckImage extends StatelessWidget {
   final String imageProd;
@@ -14,12 +12,11 @@ class CheckImage extends StatelessWidget {
           backgroundColor: Colors.black,
           actions: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.close,
                 color: Colors.white,
               ),
               onPressed: () {
-                // Get.to(CheckProd(product: product, cost: cost, ImageUri: ImageUri, time: time));
                 Navigator.pop(context);
               },
             )
@@ -28,10 +25,10 @@ class CheckImage extends StatelessWidget {
         ),
         backgroundColor: Colors.black,
         body: Center(
-          child: Container(
+          child: SizedBox(
             height: 800,
             width: double.infinity,
-            child: Image.asset(
+            child: Image.network(
               imageProd,
               fit: BoxFit.scaleDown,
             ),

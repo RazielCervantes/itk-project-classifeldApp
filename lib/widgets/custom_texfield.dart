@@ -11,7 +11,7 @@ class myTextField extends StatelessWidget {
       {Key? key,
       required this.myControler,
       this.myTextInput = TextInputType.name,
-      this.title = "title",
+      this.title = "",
       this.isPassword = false,
       this.mmyHinttext = ""})
       : super(key: key);

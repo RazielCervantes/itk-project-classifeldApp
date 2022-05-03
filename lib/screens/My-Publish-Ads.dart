@@ -1,40 +1,53 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/screens/edit-Ad.dart';
 import 'package:itk_project_classified_app/screens/new-User.dart';
+import '../controllers/mycontroller.dart';
+import '../util/constans.dart';
 
-List<dynamic> TheProducts3 = [
-  {
-    "product": "Samsung For sale",
-    "cost": "12000.0",
-    "contact": "84253543",
-    "time": "8",
-    "Image": "images/mobile_3.jpg",
-    "description":
-        "its a celular. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
-  },
-  {
-    "product": "iPhone For Sale",
-    "cost": "33000.0",
-    "contact": "84253",
-    "time": "18",
-    "Image": "images/mobile_1.jpg",
-    "description":
-        "its a Iphone. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum, nisi feugiat placerat laoreet, libero justo ornare sem, vitae fermentum est leo vel velit."
-  },
-  {
-    "product": "Used Macbook Pro for sale",
-    "cost": "45000.0",
-    "contact": "+919ii643210 ",
-    "time": "18",
-    "Image": "images/apple-macbook-pro-m1.jpg",
-    "description":
-        "Used mac 2012 for sale with good quality. 500 GB, 8GB RAM. Space Grey. Mid 2012 modal. includes Charger"
-  },
-];
+class Ads extends StatefulWidget {
+  Ads({Key? key}) : super(key: key);
 
-class Ads extends StatelessWidget {
-  const Ads({Key? key}) : super(key: key);
+  @override
+  State<Ads> createState() => _AdsState();
+}
+
+class _AdsState extends State<Ads> {
+  final MyGlbControllers _glbControllers = Get.put(MyGlbControllers());
+  final box = GetStorage();
+  final String _defaulImg =
+      "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101027.jpg";
+
+  var myads; //Variable with a form of list to save the ads's information
+
+  Future<String> getAdsInfo() async {
+    var token = box.read("token");
+    var response = await http.post(
+      Uri.parse(constans().apiURl + '/ads/user'),
+      headers: {
+        'Content-type': "application/json; charset=UTF-8",
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    setState(() {
+      myads = jsonDecode(response.body);
+    });
+
+    return "success!";
+  }
+
+  @override
+  void initState() {
+    getAdsInfo();
+
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +62,11 @@ class Ads extends StatelessWidget {
         ),
         body: Container(
           child: ListView.builder(
-            itemCount: TheProducts3.length,
+            itemCount: myads == null ? 0 : myads["data"].length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: EdgeInsets.all(4),
-                child: buildproduct(TheProducts3[index]),
-              );
+                  padding: const EdgeInsets.all(4.0),
+                  child: buildproduct(myads["data"][index]));
             },
           ),
         ),
@@ -64,15 +76,17 @@ class Ads extends StatelessWidget {
 }
 
 @override
-Widget buildproduct(Map TheProducts3) {
+Widget buildproduct(Map myads) {
   return GestureDetector(
     onTap: () {
       Get.to(EditAd(
-          productName: TheProducts3["product"],
-          productCost: TheProducts3["contact"],
-          number: TheProducts3["cost"],
-          productDescrip: TheProducts3["description"],
-          firstImage: TheProducts3["Image"]));
+        productName: myads["title"],
+        productCost: myads["price"].toString(),
+        number: myads["mobile"],
+        productDescrip: myads["description"],
+        firstImage: myads["images"][0],
+        productid: myads["_id"],
+      ));
     },
     child: Padding(
       padding: EdgeInsets.all(3.0),
@@ -83,13 +97,13 @@ Widget buildproduct(Map TheProducts3) {
             SizedBox(
               width: 100,
               height: 100,
-              child: Image.asset(TheProducts3["Image"]),
+              child: Image.network(myads["images"][0]),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  TheProducts3["product"],
+                  myads["title"],
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                 ),
                 Row(
@@ -99,14 +113,14 @@ Widget buildproduct(Map TheProducts3) {
                       size: 20,
                     ),
                     Text(
-                      TheProducts3["time"] + "days ago",
+                      myads["createdAt"],
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 10),
                     ),
                   ],
                 ),
                 Text(
-                  "\$" + TheProducts3["cost"],
+                  "\$" + myads["price"].toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
