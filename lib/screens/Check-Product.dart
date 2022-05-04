@@ -1,9 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/screens/check-Image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CheckProd extends StatelessWidget {
   final String product;
@@ -11,6 +10,7 @@ class CheckProd extends StatelessWidget {
   final String time;
   final String ImageUri;
   final String description;
+  final String sellerContact;
 
   const CheckProd({
     Key? key,
@@ -19,15 +19,17 @@ class CheckProd extends StatelessWidget {
     required this.ImageUri,
     required this.time,
     required this.description,
+    required this.sellerContact,
   }) : super(key: key);
 
-  // _openURL(url) async {
-  //   if (await canLaunchUrl(url)) {
-  //     launchUrl(url);
-  //   } else {
-  //     print("can't launch");
-  //   }
-  // }
+  _openUrl(String urlString) async {
+    Uri url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      launchUrl(url);
+    } else {
+      print("can't launch $url");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +136,9 @@ class CheckProd extends StatelessWidget {
                           color: Colors.white,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      _openUrl("tel: $sellerContact");
+                    },
                     style:
                         ElevatedButton.styleFrom(primary: Colors.orange[900]),
                   ),
@@ -146,4 +150,8 @@ class CheckProd extends StatelessWidget {
       ),
     );
   }
+
+  canLaunch(url) {}
+
+  void launch(url) {}
 }

@@ -30,7 +30,7 @@ class _EditProfileState extends State<EditProfile> {
   late final TextEditingController _editUserNumberCtrl = TextEditingController(
       text: _myGlbControllers.userProfileMobileCtr.toString());
 
-  String _imageURL = "";
+  late String _imageURL = _myGlbControllers.userProfileImagectr.toString();
 
   final box = GetStorage();
 
@@ -69,6 +69,7 @@ class _EditProfileState extends State<EditProfile> {
           "name": _editUserNameCtrl.text,
           "email": _editUserEmailCtrl.text,
           "mobile": _editUserNumberCtrl.text,
+          "imgURL": _imageURL,
         }),
       );
 
@@ -154,12 +155,12 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () async {
                         var saveChanges = await profileEdit();
                         if (saveChanges["status"] = true) {
+                          _myGlbControllers.getProfileInfo();
                           showDialog(
                               context: context,
                               builder: (contex) => AlertDialog(
                                     title: Text("Alert"),
-                                    content:
-                                        Text("Please LOGOUT to save changes"),
+                                    content: Text("User profile updated "),
                                     actions: <Widget>[
                                       IconButton(
                                         icon: Icon(Icons.close),

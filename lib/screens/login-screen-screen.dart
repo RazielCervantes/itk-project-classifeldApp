@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/controllers/mycontroller.dart';
-import 'package:itk_project_classified_app/screens/testing.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../util/constans.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
 import 'package:itk_project_classified_app/widgets/logging_image.dart';
@@ -20,6 +20,15 @@ class Loging extends StatelessWidget {
   final TextEditingController _passwordCtrl = TextEditingController();
 
   final box = GetStorage();
+
+  Future<void> opendUrl(String urlString) async {
+    var url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw "can't open Url";
+    }
+  }
 
   //loggin
 
@@ -105,6 +114,8 @@ class Loging extends StatelessWidget {
 
                       // what is goint to do the button uf we press it
                       onPressed: () async {
+                        // opendUrl("https://www.google.com");
+                        // print("works");
                         var userinfo = await logginUser();
 
                         if (_emailCtrl.text.trim() == '' ||
@@ -138,12 +149,6 @@ class Loging extends StatelessWidget {
                                       )
                                     ],
                                   ));
-
-                          // Get.to(ListOfApps());
-                          // _glbControllers.userTokenCtr.value =
-                          //     userinfo["data"]["token"];
-
-                          // print(_glbControllers.userToken);
                         }
                       },
                       style:
