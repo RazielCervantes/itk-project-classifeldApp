@@ -89,9 +89,11 @@ Widget buildproduct(Map myads) {
       ));
     },
     child: Padding(
-      padding: EdgeInsets.all(3.0),
-      child: Card(
-        elevation: 4.0,
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(4.0)),
         child: Row(
           children: [
             SizedBox(

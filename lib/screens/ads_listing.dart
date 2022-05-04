@@ -27,38 +27,6 @@ class _ListOfAppsState extends State<ListOfApps> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
   final box = GetStorage();
 
-//request the info from the current user
-
-  // Future getProfileInfo() async {
-  //   try {
-  //     var token = box.read('token');
-  //     var respon = await http.post(
-  //       Uri.parse(constans().apiURl + '/user/profile'),
-  //       headers: {
-  //         'Content-type': 'application/json',
-  //         'Accept': 'application/json',
-  //         'Authorization': 'Bearer $token'
-  //       },
-  //     );
-  //     var _request = jsonDecode(respon.body);
-
-  //     if (_request["status"] == true) {
-  //       _myGlbControllers.userNameCtr.value = _request["data"]["name"];
-  //       _myGlbControllers.userProfileEmailCtr.value = _request["data"]["email"];
-  //       _myGlbControllers.userProfileMobileCtr.value =
-  //           _request["data"]["mobile"];
-  //       _myGlbControllers.userProfileImagectr.value =
-  //           _request["data"]["imgURL"];
-  //       _myGlbControllers.userProfileDatectr.value = _request["data"]["date"];
-  //     }
-
-  //     print(_request);
-  //     return _request;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
-
 //request the ads published
 
   var _publishedAds; //Variable with a form of list to save the ads's information
