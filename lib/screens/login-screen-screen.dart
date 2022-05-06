@@ -21,15 +21,6 @@ class Loging extends StatelessWidget {
 
   final box = GetStorage();
 
-  Future<void> opendUrl(String urlString) async {
-    var url = Uri.parse(urlString);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw "can't open Url";
-    }
-  }
-
   //loggin
 
   Future logginUser() async {
@@ -41,8 +32,8 @@ class Loging extends StatelessWidget {
           'Accept': 'application/json'
         },
         body: jsonEncode({
-          "email": _emailCtrl.text,
-          "password": _passwordCtrl.text,
+          "email": _emailCtrl.text.trim(),
+          "password": _passwordCtrl.text.trim(),
         }),
       );
 
@@ -52,19 +43,7 @@ class Loging extends StatelessWidget {
         box.write("token", temp["data"]["token"]);
         box.write("idUser", temp["data"]["user"]["_id"]);
         Get.offAll(ListOfApps());
-        // Get.offAll(testingScreen());
       }
-      // print(respon.statusCode.toString());
-      // print(_request);
-      // var _statusCodeResques = respon.statusCode;
-      // if (_statusCodeResques == 200) {
-      // return "success";
-      // }
-
-      // print(_statusCodeResques.toString());
-      // print(respon.body.toString());
-      // debugPrint(respon.body);
-
       return _request;
     } catch (error) {
       // print(error);
@@ -114,8 +93,6 @@ class Loging extends StatelessWidget {
 
                       // what is goint to do the button uf we press it
                       onPressed: () async {
-                        // opendUrl("https://www.google.com");
-                        // print("works");
                         var userinfo = await logginUser();
 
                         if (_emailCtrl.text.trim() == '' ||
