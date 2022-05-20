@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "494961060187",
+    "project_id": "ksquare-ad-listing",
+    "storage_bucket": "ksquare-ad-listing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494961060187:android:e58002d7619a9cbafad27e",
+        "android_client_info": {
+          "package_name": "com.example.itk_project_classified_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494961060187-1drit0jt3ept0rrm1aguetbckn75dp6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO214d_U-8SPrEa1zDvPWy78Qg_LGamg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494961060187-1drit0jt3ept0rrm1aguetbckn75dp6e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

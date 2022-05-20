@@ -5,10 +5,15 @@ import 'package:get_storage/get_storage.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/screens/login-screen-screen.dart';
 import 'package:itk_project_classified_app/screens/new-User.dart';
-import 'package:itk_project_classified_app/screens/testing.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await GetStorage.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

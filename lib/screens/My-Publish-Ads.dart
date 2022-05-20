@@ -84,7 +84,7 @@ Widget buildproduct(Map myads) {
         productCost: myads["price"].toString(),
         number: myads["mobile"],
         productDescrip: myads["description"],
-        firstImage: myads["images"][0],
+        addImages: myads["images"],
         productid: myads["_id"],
       ));
     },

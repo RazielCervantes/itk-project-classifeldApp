@@ -44,10 +44,8 @@ class _newUserState extends State<newUser> {
 
       var _request = jsonDecode(respon.body);
       return _request;
-      // print(_request);
-      // print(respon.statusCode.toString());
     } catch (error) {
-      // print(error);
+      ;
       return error;
     }
   }

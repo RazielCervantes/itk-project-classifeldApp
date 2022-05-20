@@ -30,6 +30,7 @@ class _CreateAdState extends State<CreateAd> {
   final TextEditingController _newAdNumberCtrl = TextEditingController();
 
   final box = GetStorage();
+
   var _imagesURL;
 
   PickMultipleImages() async {

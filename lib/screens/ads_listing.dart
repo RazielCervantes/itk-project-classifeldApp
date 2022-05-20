@@ -123,6 +123,7 @@ class _ListOfAppsState extends State<ListOfApps> {
           time: _publishedAds["createdAt"],
           description: _publishedAds["description"],
           sellerContact: _publishedAds["mobile"],
+          sellername: _publishedAds["authorName"],
           // sellercontact: _publishedAds["mobile"],
         ));
 
@@ -140,7 +141,8 @@ class _ListOfAppsState extends State<ListOfApps> {
             width: double.infinity,
             color: Colors.black,
             child: Image.network(
-              _publishedAds["images"][0] == null
+              _publishedAds["images"][0] == null ||
+                      _publishedAds["images"][0] == ""
                   ? _defaulImg
                   : _publishedAds["images"][0],
               fit: BoxFit.fitHeight,

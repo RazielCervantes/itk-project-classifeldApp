@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:simple_moment/simple_moment.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/screens/check-Image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,10 +12,11 @@ import 'package:url_launcher/url_launcher.dart';
 class CheckProd extends StatelessWidget {
   final String product;
   final String cost;
-  final String time;
+  final time;
   final String ImageUri;
   final String description;
   final String sellerContact;
+  final String sellername;
 
   const CheckProd({
     Key? key,
@@ -20,6 +26,7 @@ class CheckProd extends StatelessWidget {
     required this.time,
     required this.description,
     required this.sellerContact,
+    required this.sellername,
   }) : super(key: key);
 
   _openUrl(String urlString) async {
@@ -33,6 +40,17 @@ class CheckProd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime tims = DateTime.parse(time);
+
+    // var dateToCompare = new Duration(
+    //   seconds: 21,
+    //   minutes: 25,
+    //   hours: 21,
+    // );
+
+    // var dateForComparision = new DateTime.now().add(dateToCompare);
+    // var moment = new Moment.now();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -95,7 +113,7 @@ class CheckProd extends StatelessWidget {
                             Icon(Icons.person_outline_outlined),
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
-                              child: Text("All"),
+                              child: Text("$sellername"),
                             )
                           ],
                         ),
@@ -110,7 +128,7 @@ class CheckProd extends StatelessWidget {
                             Icon(Icons.timer_outlined),
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
-                              child: Text(time.toString()),
+                              child: Text(timeago.format(tims, locale: 'en')),
                             )
                           ],
                         ),

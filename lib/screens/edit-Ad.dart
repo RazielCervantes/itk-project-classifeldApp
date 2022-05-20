@@ -18,7 +18,7 @@ class EditAd extends StatefulWidget {
   final String productCost;
   final String number;
   final String productDescrip;
-  final String firstImage;
+  final List addImages;
   final String productid;
   EditAd({
     Key? key,
@@ -26,7 +26,7 @@ class EditAd extends StatefulWidget {
     required this.productCost,
     required this.number,
     required this.productDescrip,
-    required this.firstImage,
+    required this.addImages,
     required this.productid,
   }) : super(key: key);
 
@@ -55,57 +55,66 @@ class _EditAdState extends State<EditAd> {
   var _imagesURL;
 
   PickMultipleImages() async {
-    var images = await ImagePicker().pickMultiImage();
-    if (images!.isNotEmpty) {
-      //upload images
-      var request = http.MultipartRequest(
-          "POST", Uri.parse(constans().apiURl + '/upload/photos'));
-      images.forEach((images) async {
-        request.files
-            .add(await http.MultipartFile.fromPath('photos', images.path));
-      });
-      var res = await request.send();
-      var respData = await res.stream.toBytes();
-      var respStr = String.fromCharCodes(respData);
-      var jsonObj = json.decode(respStr);
-      print(jsonObj["data"]["path"]);
-      setState(() {
-        _imagesURL = (jsonObj["data"]["path"]);
-      });
-    } else {
-      print("no images picked");
+    try {
+      var images = await ImagePicker().pickMultiImage();
+      if (images != null) {
+        //upload images
+        var request = http.MultipartRequest(
+            "POST", Uri.parse(constans().apiURl + '/upload/photos'));
+        images.forEach((images) async {
+          request.files
+              .add(await http.MultipartFile.fromPath('photos', images.path));
+        });
+        var res = await request.send();
+        var respData = await res.stream.toBytes();
+        var respStr = String.fromCharCodes(respData);
+        var jsonObj = json.decode(respStr);
+        print(jsonObj["data"]["path"]);
+        setState(() {
+          _imagesURL = (jsonObj["data"]["path"]);
+        });
+      } else {
+        print("no image picked");
+        _imagesURL = widget.addImages;
+        print(_imagesURL);
+      }
+    } catch (e) {
+      return e;
     }
   }
 
   Future adEdit() async {
-    try {
-      var token = box.read("token");
-      var respon = await http.patch(
-        Uri.parse(constans().apiURl + '/ads/${widget.productid}'),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token'
-        },
-        body: jsonEncode({
-          "title": _editAdTitleCtrl.text,
-          "price": _editAdPriceCtrl.text,
-          "mobile": _editAdContactCtrl.text,
-          "description": _editAdDescriptionCtrl.text,
-          "images": _imagesURL,
-        }),
-      );
+    var token = await box.read("token");
+    var respon = await http.patch(
+      Uri.parse(constans().apiURl + '/ads/${widget.productid}'),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode({
+        "title": _editAdTitleCtrl.text,
+        "price": _editAdPriceCtrl.text,
+        "mobile": _editAdContactCtrl.text,
+        "description": _editAdDescriptionCtrl.text,
+        "images": _imagesURL,
+      }),
+    );
 
-      var _request = jsonDecode(respon.body);
-      var temp = jsonDecode(respon.body);
-      if (temp["status"] == true) {
-        Get.to(ListOfApps());
-      }
-
-      return _request;
-    } catch (error) {
-      return error;
+    var _request = jsonDecode(respon.body);
+    var temp = jsonDecode(respon.body);
+    if (temp["status"] == true) {
+      Get.to(ListOfApps());
     }
+
+    return _request;
+  }
+
+  @override
+  void initState() {
+    _imagesURL = widget.addImages;
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -178,7 +187,7 @@ class _EditAdState extends State<EditAd> {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.network(
-                                "${widget.firstImage}",
+                                "${widget.addImages}",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -193,7 +202,7 @@ class _EditAdState extends State<EditAd> {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.network(
-                                "${widget.firstImage}",
+                                "${widget.addImages}",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -208,7 +217,7 @@ class _EditAdState extends State<EditAd> {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.network(
-                                "${widget.firstImage}",
+                                "${widget.addImages}",
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -254,8 +263,8 @@ class _EditAdState extends State<EditAd> {
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
-                      onPressed: () {
-                        adEdit();
+                      onPressed: () async {
+                        await adEdit();
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),
