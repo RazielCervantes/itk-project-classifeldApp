@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -80,6 +81,12 @@ class _EditProfileState extends State<EditProfile> {
     } catch (error) {
       return error;
     }
+  }
+
+  void logout() {
+    FirebaseAuth.instance.signOut().then((value) {
+      Get.offAll(Loging());
+    });
   }
 
   @override
@@ -184,7 +191,7 @@ class _EditProfileState extends State<EditProfile> {
                     style: TextStyle(color: Colors.orange[900]),
                   ),
                   onPressed: () {
-                    Get.to(Loging());
+                    logout();
                   },
                 )
               ],

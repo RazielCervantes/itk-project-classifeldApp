@@ -7,6 +7,7 @@ import 'package:itk_project_classified_app/screens/login-screen-screen.dart';
 import 'package:itk_project_classified_app/screens/new-User.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:itk_project_classified_app/screens/validate.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         // child: Loging(),
-        child: Loging(),
+        child: ValidateScreen(),
       ),
     );
   }
