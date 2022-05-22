@@ -12,7 +12,7 @@ class CheckProd extends StatelessWidget {
   final String product;
   final String cost;
   final time;
-  final String ImageUri;
+  final String imageUri;
   final String description;
   final String sellerContact;
   final String sellername;
@@ -21,7 +21,7 @@ class CheckProd extends StatelessWidget {
     Key? key,
     required this.product,
     required this.cost,
-    required this.ImageUri,
+    required this.imageUri,
     required this.time,
     required this.description,
     required this.sellerContact,
@@ -40,15 +40,6 @@ class CheckProd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime tims = DateTime.parse(time);
-
-    // var dateToCompare = new Duration(
-    //   seconds: 21,
-    //   minutes: 25,
-    //   hours: 21,
-    // );
-
-    // var dateForComparision = new DateTime.now().add(dateToCompare);
-    // var moment = new Moment.now();
 
     return SafeArea(
       child: Scaffold(
@@ -89,13 +80,13 @@ class CheckProd extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CheckImage(imageProd: ImageUri)));
+                                  CheckImage(imageProd: imageUri)));
                     },
                     child: Container(
                       height: 260,
                       width: double.infinity,
                       child: Image.network(
-                        ImageUri,
+                        imageUri,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -112,7 +103,8 @@ class CheckProd extends StatelessWidget {
                             Icon(Icons.person_outline_outlined),
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
-                              child: Text("$sellername"),
+                              // child: Text("$sellername"),
+                              child: Text("All"),
                             )
                           ],
                         ),

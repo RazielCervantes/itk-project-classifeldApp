@@ -26,28 +26,28 @@ class _AdsState extends State<Ads> {
   final String _defaulImg =
       "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101027.jpg";
 
-  var myads; //Variable with a form of list to save the ads's information
+  // var myads; //Variable with a form of list to save the ads's information
 
-  Future<String> getAdsInfo() async {
-    var token = box.read("token");
-    var response = await http.post(
-      Uri.parse(constans().apiURl + '/ads/user'),
-      headers: {
-        'Content-type': "application/json; charset=UTF-8",
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
-      },
-    );
-    setState(() {
-      myads = jsonDecode(response.body);
-    });
+  // Future<String> getAdsInfo() async {
+  //   var token = box.read("token");
+  //   var response = await http.post(
+  //     Uri.parse(constans().apiURl + '/ads/user'),
+  //     headers: {
+  //       'Content-type': "application/json; charset=UTF-8",
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $token'
+  //     },
+  //   );
+  //   setState(() {
+  //     myads = jsonDecode(response.body);
+  //   });
 
-    return "success!";
-  }
+  //   return "success!";
+  // }
 
   @override
   void initState() {
-    getAdsInfo();
+    // getAdsInfo();
     _adsController.getMyAds();
     // TODO: implement initState
     super.initState();
