@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:itk_project_classified_app/screens/edit-Ad.dart';
+import 'package:itk_project_classified_app/controllers/ads.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
@@ -18,7 +21,7 @@ class EditAd extends StatefulWidget {
   final String productCost;
   final String number;
   final String productDescrip;
-  final List addImages;
+  // final List addImages;
   final String productid;
   EditAd({
     Key? key,
@@ -26,7 +29,7 @@ class EditAd extends StatefulWidget {
     required this.productCost,
     required this.number,
     required this.productDescrip,
-    required this.addImages,
+    // required this.addImages,
     required this.productid,
   }) : super(key: key);
 
@@ -37,6 +40,8 @@ class EditAd extends StatefulWidget {
 class _EditAdState extends State<EditAd> {
   // DataTextField myvar = DataTextField();
   PublishProducts data = PublishProducts();
+
+  final AdsController _adsController = Get.put(AdsController());
 
   late final TextEditingController _editAdTitleCtrl =
       TextEditingController(text: this.widget.productName.toString());
@@ -57,65 +62,65 @@ class _EditAdState extends State<EditAd> {
   final String _defaulImg =
       "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101027.jpg";
 
-  PickMultipleImages() async {
-    try {
-      var images = await ImagePicker().pickMultiImage();
-      if (images != null) {
-        //upload images
-        var request = http.MultipartRequest(
-            "POST", Uri.parse(constans().apiURl + '/upload/photos'));
-        images.forEach((images) async {
-          request.files
-              .add(await http.MultipartFile.fromPath('photos', images.path));
-        });
-        var res = await request.send();
-        var respData = await res.stream.toBytes();
-        var respStr = String.fromCharCodes(respData);
-        var jsonObj = json.decode(respStr);
-        print(jsonObj["data"]["path"]);
-        setState(() {
-          _imagesURL = (jsonObj["data"]["path"]);
-        });
-      } else {
-        print("no image picked");
-        _imagesURL = widget.addImages;
-        print(_imagesURL);
-      }
-    } catch (e) {
-      return e;
-    }
-  }
+  // PickMultipleImages() async {
+  //   try {
+  //     var images = await ImagePicker().pickMultiImage();
+  //     if (images != null) {
+  //       //upload images
+  //       var request = http.MultipartRequest(
+  //           "POST", Uri.parse(constans().apiURl + '/upload/photos'));
+  //       images.forEach((images) async {
+  //         request.files
+  //             .add(await http.MultipartFile.fromPath('photos', images.path));
+  //       });
+  //       var res = await request.send();
+  //       var respData = await res.stream.toBytes();
+  //       var respStr = String.fromCharCodes(respData);
+  //       var jsonObj = json.decode(respStr);
+  //       print(jsonObj["data"]["path"]);
+  //       setState(() {
+  //         _imagesURL = (jsonObj["data"]["path"]);
+  //       });
+  //     } else {
+  //       print("no image picked");
+  //       _imagesURL = widget.addImages;
+  //       print(_imagesURL);
+  //     }
+  //   } catch (e) {
+  //     return e;
+  //   }
+  // }
 
-  Future adEdit() async {
-    var token = await box.read("token");
-    var respon = await http.patch(
-      Uri.parse(constans().apiURl + '/ads/${widget.productid}'),
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token'
-      },
-      body: jsonEncode({
-        "title": _editAdTitleCtrl.text,
-        "price": _editAdPriceCtrl.text,
-        "mobile": _editAdContactCtrl.text,
-        "description": _editAdDescriptionCtrl.text,
-        "images": _imagesURL,
-      }),
-    );
+  // Future adEdit() async {
+  //   var token = await box.read("token");
+  //   var respon = await http.patch(
+  //     Uri.parse(constans().apiURl + '/ads/${widget.productid}'),
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $token'
+  //     },
+  //     body: jsonEncode({
+  //       "title": _editAdTitleCtrl.text,
+  //       "price": _editAdPriceCtrl.text,
+  //       "mobile": _editAdContactCtrl.text,
+  //       "description": _editAdDescriptionCtrl.text,
+  //       "images": _imagesURL,
+  //     }),
+  //   );
 
-    var _request = jsonDecode(respon.body);
-    var temp = jsonDecode(respon.body);
-    if (temp["status"] == true) {
-      Get.to(ListOfApps());
-    }
+  //   var _request = jsonDecode(respon.body);
+  //   var temp = jsonDecode(respon.body);
+  //   if (temp["status"] == true) {
+  //     Get.to(ListOfApps());
+  //   }
 
-    return _request;
-  }
+  //   return _request;
+  // }
 
   @override
   void initState() {
-    _imagesURL = widget.addImages;
+    // _imagesURL = widget.addImages;
     // TODO: implement initState
     super.initState();
   }
@@ -150,7 +155,8 @@ class _EditAdState extends State<EditAd> {
                         style: OutlinedButton.styleFrom(
                             side: BorderSide(width: 1.0, color: Colors.grey)),
                         onPressed: () {
-                          PickMultipleImages();
+                          // PickMultipleImages();
+                          print(widget.productid);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -190,7 +196,8 @@ class _EditAdState extends State<EditAd> {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.network(
-                                "${widget.addImages}",
+                                // "${widget.addImages}",
+                                _defaulImg,
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -205,7 +212,8 @@ class _EditAdState extends State<EditAd> {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.network(
-                                "${widget.addImages}",
+                                // "${widget.addImages}",
+                                _defaulImg,
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -220,7 +228,8 @@ class _EditAdState extends State<EditAd> {
                           child: Padding(
                               padding: EdgeInsets.all(4.0),
                               child: Image.network(
-                                "${widget.addImages}",
+                                // "${widget.addImages}",
+                                _defaulImg,
                                 fit: BoxFit.contain,
                               ))),
                     ),
@@ -267,7 +276,13 @@ class _EditAdState extends State<EditAd> {
                             fontWeight: FontWeight.w600),
                       ),
                       onPressed: () async {
-                        await adEdit();
+                        _adsController.UpdateMyAds(
+                            widget.productid,
+                            _editAdTitleCtrl.text,
+                            _editAdPriceCtrl.text,
+                            _editAdContactCtrl.text,
+                            _editAdDescriptionCtrl.text);
+                        // await adEdit();
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),

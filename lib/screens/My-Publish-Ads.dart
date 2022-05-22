@@ -83,8 +83,8 @@ class _AdsState extends State<Ads> {
                       productCost: _adsController.ads[index]["Price"],
                       number: _adsController.ads[index]["Mobile"],
                       productDescrip: _adsController.ads[index]["Description"],
-                      addImages: myads["images"],
-                      productid: myads["_id"],
+                      // addImages: myads["images"],
+                      productid: _adsController.ads[index]["id"],
                     ));
                   },
                   child: Padding(

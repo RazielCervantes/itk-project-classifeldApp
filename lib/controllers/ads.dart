@@ -26,7 +26,7 @@ class AdsController extends GetxController {
     });
   }
 
-  void getMyAds() {
+  void getAllAds() {
     firestore.collection("ads").get().then((res) {
       if (res.docs.length > 0) {
         var tmp = [];
@@ -36,6 +36,32 @@ class AdsController extends GetxController {
         print(tmp);
         ads.assignAll(tmp);
       }
+    });
+  }
+
+  void getMyAds() {
+    firestore
+        .collection("ads")
+        .where('uid', isEqualTo: auth.currentUser!.uid)
+        .get()
+        .then((res) {
+      if (res.docs.length > 0) {
+        var tmp = [];
+        res.docs.forEach((ads) {
+          tmp.add({"id": ads.id, ...ads.data()});
+        });
+        print(tmp);
+        ads.assignAll(tmp);
+      }
+    });
+  }
+
+  void UpdateMyAds(id, title, price, mobile, description) {
+    firestore.collection("ads").doc(id).update({
+      "title": title,
+      "Price": price,
+      "Mobile": mobile,
+      "Description": description,
     });
   }
 }
