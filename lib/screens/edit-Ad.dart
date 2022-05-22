@@ -54,6 +54,9 @@ class _EditAdState extends State<EditAd> {
 
   var _imagesURL;
 
+  final String _defaulImg =
+      "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101027.jpg";
+
   PickMultipleImages() async {
     try {
       var images = await ImagePicker().pickMultiImage();

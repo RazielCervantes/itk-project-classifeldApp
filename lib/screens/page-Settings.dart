@@ -3,6 +3,7 @@ import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import 'package:itk_project_classified_app/screens/edit-Profile.dart';
 import 'package:itk_project_classified_app/screens/my-Publish-Ads.dart';
 import 'package:get/get.dart';
+import 'package:itk_project_classified_app/controllers/ads.dart';
 import 'package:itk_project_classified_app/widgets/buttonssettings.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
-
+  final AdsController _adsController = Get.put(AdsController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -76,6 +77,8 @@ class _SettingsPageState extends State<SettingsPage> {
               child: GestureDetector(
                 onTap: () {
                   Get.to(Ads());
+
+                  // _adsController.getMyAds();
                 },
                 child: Container(
                   height: 40,

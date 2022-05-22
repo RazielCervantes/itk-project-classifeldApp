@@ -12,7 +12,7 @@ class AdsController extends GetxController {
   var auth = FirebaseAuth.instance;
 
   void addNewAd(title, price, mobile, descrp) {
-    firestore.collection("published Ads").add({
+    firestore.collection("ads").add({
       "title": title,
       "Price": price,
       "Mobile": mobile,
@@ -23,6 +23,19 @@ class AdsController extends GetxController {
       wasSuccess = true as RxBool;
     }).catchError((e) {
       print(e);
+    });
+  }
+
+  void getMyAds() {
+    firestore.collection("ads").get().then((res) {
+      if (res.docs.length > 0) {
+        var tmp = [];
+        res.docs.forEach((ads) {
+          tmp.add({"id": ads.id, ...ads.data()});
+        });
+        print(tmp);
+        ads.assignAll(tmp);
+      }
     });
   }
 }

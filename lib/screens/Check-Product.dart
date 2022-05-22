@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:simple_moment/simple_moment.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/screens/check-Image.dart';
 import 'package:url_launcher/url_launcher.dart';
