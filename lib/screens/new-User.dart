@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
@@ -50,6 +51,18 @@ class _newUserState extends State<newUser> {
     }
   }
 
+  registerWithFirebase() {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+            email: _newUserEmailCtrl.text, password: _newUserPasswordCtrl.text)
+        .then((value) {
+      print("register success");
+      Get.to(ListOfApps());
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -98,44 +111,46 @@ class _newUserState extends State<newUser> {
                             fontWeight: FontWeight.w600),
                       ),
                       onPressed: () async {
-                        var newUserinfo = await registerNewUsers();
+                        registerWithFirebase();
 
-                        if (_newUserNameCtrl.text.trim() == '' ||
-                            _newUserEmailCtrl.text.trim() == "" ||
-                            _newUserNumberCtrl.text.trim() == '' ||
-                            _newUserPasswordCtrl.text.trim() == "") {
-                          showDialog(
-                              context: context,
-                              builder: (contex) => AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text("Please Fill Out All Fields"),
-                                    actions: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.pop(contex);
-                                        },
-                                      )
-                                    ],
-                                  ));
-                        } else if (newUserinfo["status"] == true) {
-                          Get.to(ListOfApps());
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (contex) => AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text(newUserinfo["message"]),
-                                    actions: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.pop(contex);
-                                        },
-                                      )
-                                    ],
-                                  ));
-                        }
+                        // var newUserinfo = await registerNewUsers();
+
+                        // if (_newUserNameCtrl.text.trim() == '' ||
+                        //     _newUserEmailCtrl.text.trim() == "" ||
+                        //     _newUserNumberCtrl.text.trim() == '' ||
+                        //     _newUserPasswordCtrl.text.trim() == "") {
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (contex) => AlertDialog(
+                        //             title: Text("Error"),
+                        //             content: Text("Please Fill Out All Fields"),
+                        //             actions: <Widget>[
+                        //               IconButton(
+                        //                 icon: Icon(Icons.close),
+                        //                 onPressed: () {
+                        //                   Navigator.pop(contex);
+                        //                 },
+                        //               )
+                        //             ],
+                        //           ));
+                        // } else if (newUserinfo["status"] == true) {
+                        //   Get.to(ListOfApps());
+                        // } else {
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (contex) => AlertDialog(
+                        //             title: Text("Error"),
+                        //             content: Text(newUserinfo["message"]),
+                        //             actions: <Widget>[
+                        //               IconButton(
+                        //                 icon: Icon(Icons.close),
+                        //                 onPressed: () {
+                        //                   Navigator.pop(contex);
+                        //                 },
+                        //               )
+                        //             ],
+                        //           ));
+                        // }
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),

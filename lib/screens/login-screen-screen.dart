@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../util/constans.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
 import 'package:itk_project_classified_app/widgets/logging_image.dart';
@@ -23,32 +26,44 @@ class Loging extends StatelessWidget {
 
   //loggin
 
-  Future logginUser() async {
-    try {
-      var respon = await http.post(
-        Uri.parse(constans().apiURl + '/auth/login'),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode({
-          "email": _emailCtrl.text.trim(),
-          "password": _passwordCtrl.text.trim(),
-        }),
-      );
+  // Future logginUser() async {
+  //   try {
+  //     var respon = await http.post(
+  //       Uri.parse(constans().apiURl + '/auth/login'),
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         'Accept': 'application/json'
+  //       },
+  //       body: jsonEncode({
+  //         "email": _emailCtrl.text.trim(),
+  //         "password": _passwordCtrl.text.trim(),
+  //       }),
+  //     );
 
-      var _request = jsonDecode(respon.body);
-      var temp = jsonDecode(respon.body);
-      if (temp["status"] == true) {
-        box.write("token", temp["data"]["token"]);
-        box.write("idUser", temp["data"]["user"]["_id"]);
-        Get.offAll(ListOfApps());
-      }
-      return _request;
-    } catch (error) {
-      // print(error);
-      return error;
-    }
+  //     var _request = jsonDecode(respon.body);
+  //     var temp = jsonDecode(respon.body);
+  //     if (temp["status"] == true) {
+  //       box.write("token", temp["data"]["token"]);
+  //       box.write("idUser", temp["data"]["user"]["_id"]);
+  //       Get.offAll(ListOfApps());
+  //     }
+  //     return _request;
+  //   } catch (error) {
+  //     // print(error);
+  //     return error;
+  //   }
+  // }
+
+  logingWithFirebase() {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _emailCtrl.text, password: _passwordCtrl.text)
+        .then((value) {
+      print("Login success");
+      Get.to(ListOfApps());
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   @override
@@ -93,40 +108,43 @@ class Loging extends StatelessWidget {
 
                       // what is goint to do the button uf we press it
                       onPressed: () async {
-                        var userinfo = await logginUser();
+                        // var userinfo = await logginUser();
+                        print("click login");
 
-                        if (_emailCtrl.text.trim() == '' ||
-                            _passwordCtrl.text.trim() == "") {
-                          showDialog(
-                              context: context,
-                              builder: (contex) => AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text("Please Fill Out All Fields"),
-                                    actions: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.pop(contex);
-                                        },
-                                      )
-                                    ],
-                                  ));
-                        } else if (userinfo["status"] != true) {
-                          showDialog(
-                              context: context,
-                              builder: (contex) => AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text(userinfo["message"]),
-                                    actions: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.pop(contex);
-                                        },
-                                      )
-                                    ],
-                                  ));
-                        }
+                        await logingWithFirebase();
+
+                        // if (_emailCtrl.text.trim() == '' ||
+                        //     _passwordCtrl.text.trim() == "") {
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (contex) => AlertDialog(
+                        //             title: Text("Error"),
+                        //             content: Text("Please Fill Out All Fields"),
+                        //             actions: <Widget>[
+                        //               IconButton(
+                        //                 icon: Icon(Icons.close),
+                        //                 onPressed: () {
+                        //                   Navigator.pop(contex);
+                        //                 },   ss
+                        //               )
+                        //             ],
+                        //           ));
+                        // } else if (userinfo["status"] != true) {
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (contex) => AlertDialog(
+                        //             title: Text("Error"),
+                        //             content: Text(userinfo["message"]),
+                        //             actions: <Widget>[
+                        //               IconButton(
+                        //                 icon: Icon(Icons.close),
+                        //                 onPressed: () {
+                        //                   Navigator.pop(contex);
+                        //                 },
+                        //               )
+                        //             ],
+                        //           ));
+                        // }
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),
