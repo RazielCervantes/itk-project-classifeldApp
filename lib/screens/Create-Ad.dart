@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:itk_project_classified_app/controllers/ads.dart';
 import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import '../util/constans.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
@@ -21,6 +22,8 @@ class CreateAd extends StatefulWidget {
 }
 
 class _CreateAdState extends State<CreateAd> {
+  final AdsController _adsController = Get.put(AdsController());
+
   final TextEditingController _newAdTitleCtrl = TextEditingController();
 
   final TextEditingController _newAdPriceCtrl = TextEditingController();
@@ -31,7 +34,7 @@ class _CreateAdState extends State<CreateAd> {
 
   final box = GetStorage();
 
-  var _imagesURL;
+  late bool wasadded = _adsController.wasSuccess as bool;
 
   PickMultipleImages() async {
     var images = await ImagePicker().pickMultiImage();
@@ -56,37 +59,37 @@ class _CreateAdState extends State<CreateAd> {
     }
   }
 
-  Future uploadAd() async {
-    try {
-      var token = box.read("token");
-      var respon = await http.post(
-        Uri.parse(constans().apiURl + '/ads'),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token'
-        },
-        body: jsonEncode({
-          "title": _newAdTitleCtrl.text,
-          "price": _newAdPriceCtrl.text,
-          "mobile": _newAdNumberCtrl.text,
-          "description": _newAdDescriptionCtrl.text,
-          "images": _imagesURL
-        }),
-      );
+  // Future uploadAd() async {
+  //   try {
+  //     var token = box.read("token");
+  //     var respon = await http.post(
+  //       Uri.parse(constans().apiURl + '/ads'),
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         'Accept': 'application/json',
+  //         'Authorization': 'Bearer $token'
+  //       },
+  //       body: jsonEncode({
+  //         "title": _newAdTitleCtrl.text,
+  //         "price": _newAdPriceCtrl.text,
+  //         "mobile": _newAdNumberCtrl.text,
+  //         "description": _newAdDescriptionCtrl.text,
+  //         "images": _imagesURL
+  //       }),
+  //     );
 
-      var _request = jsonDecode(respon.body);
-      print(_request);
-      var temp = jsonDecode(respon.body);
-      if (temp["status"] == true) {
-        Get.offAll(ListOfApps());
-      }
+  //     var _request = jsonDecode(respon.body);
+  //     print(_request);
+  //     var temp = jsonDecode(respon.body);
+  //     if (temp["status"] == true) {
+  //       Get.offAll(ListOfApps());
+  //     }
 
-      return _request;
-    } catch (error) {
-      return error;
-    }
-  }
+  //     return _request;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +204,22 @@ class _CreateAdState extends State<CreateAd> {
                             fontWeight: FontWeight.w600),
                       ),
                       onPressed: () {
-                        uploadAd();
+                        _adsController.addNewAd(
+                            _newAdTitleCtrl.text,
+                            _newAdPriceCtrl.text,
+                            _newAdNumberCtrl.text,
+                            _newAdDescriptionCtrl.text);
+
+                        // setState(() {
+                        //   if (wasadded == true) {
+                        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //       content: Text("new ad added"),
+                        //       duration: Duration(seconds: 2),
+                        //     ));
+                        //   }
+                        // });
+
+                        // uploadAd();
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),

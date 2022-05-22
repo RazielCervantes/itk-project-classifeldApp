@@ -19,6 +19,7 @@ class Loging extends StatelessWidget {
   Loging({Key? key}) : super(key: key);
 
   final MyGlbControllers _glbControllers = Get.put(MyGlbControllers());
+
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
 

@@ -29,29 +29,29 @@ class _newUserState extends State<newUser> {
 
   final TextEditingController _newUserPasswordCtrl = TextEditingController();
 
-  Future registerNewUsers() async {
-    try {
-      var respon = await http.post(
-        Uri.parse(constans().apiURl + '/auth/register'),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode({
-          "name": _newUserNameCtrl.text,
-          "email": _newUserEmailCtrl.text,
-          "password": _newUserPasswordCtrl.text,
-          "mobile": _newUserNumberCtrl.text
-        }),
-      );
+  // Future registerNewUsers() async {
+  //   try {
+  //     var respon = await http.post(
+  //       Uri.parse(constans().apiURl + '/auth/register'),
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         'Accept': 'application/json'
+  //       },
+  //       body: jsonEncode({
+  //         "name": _newUserNameCtrl.text,
+  //         "email": _newUserEmailCtrl.text,
+  //         "password": _newUserPasswordCtrl.text,
+  //         "mobile": _newUserNumberCtrl.text
+  //       }),
+  //     );
 
-      var _request = jsonDecode(respon.body);
-      return _request;
-    } catch (error) {
-      ;
-      return error;
-    }
-  }
+  //     var _request = jsonDecode(respon.body);
+  //     return _request;
+  //   } catch (error) {
+  //     ;
+  //     return error;
+  //   }
+  // }
 
   registerWithFirebase() {
     FirebaseAuth.instance
