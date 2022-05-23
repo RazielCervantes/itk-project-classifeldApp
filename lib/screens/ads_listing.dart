@@ -25,6 +25,8 @@ class ListOfApps extends StatefulWidget {
 }
 
 class _ListOfAppsState extends State<ListOfApps> {
+  final String _profile =
+      "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
   final String _defaulImg =
       "https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101027.jpg";
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
@@ -81,8 +83,11 @@ class _ListOfAppsState extends State<ListOfApps> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Obx(() => CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            _profileController.accountsInfo[0]["imageURL"]),
+                        backgroundImage: NetworkImage(_profileController
+                                    .accountsInfo[0]["imageURL"] ==
+                                null
+                            ? _profile
+                            : _profileController.accountsInfo[0]["imageURL"]),
                       )),
                 )),
           ],

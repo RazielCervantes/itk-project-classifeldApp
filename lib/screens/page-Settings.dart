@@ -15,6 +15,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
   final ProfileController _profileController = Get.put(ProfileController());
+  final String _profile =
+      "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
   @override
   void initState() {
@@ -47,8 +49,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: EdgeInsets.fromLTRB(12, 15, 16, 12),
                       child: Obx(
                         () => CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              _profileController.accountsInfo[0]["imageURL"]),
+                          backgroundImage: NetworkImage(_profileController
+                                      .accountsInfo[0]["imageURL"] ==
+                                  null
+                              ? _profile
+                              : _profileController.accountsInfo[0]["imageURL"]),
                           radius: 24,
                         ),
                       ),
@@ -87,8 +92,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       userfullName: _profileController.accountsInfo[0]
                           ["fullname"],
                       userid: _profileController.accountsInfo[0]["userId"],
-                      profileImage: _profileController.accountsInfo[0]
-                          ["imageURL"],
+                      profileImage:
+                          _profileController.accountsInfo[0]["imageURL"] == null
+                              ? _profile
+                              : _profileController.accountsInfo[0]["imageURL"],
                     ));
                   },
                 ),

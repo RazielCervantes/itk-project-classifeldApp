@@ -28,6 +28,8 @@ class AdsController extends GetxController {
     });
   }
 
+  uploadAdImages() async {}
+
   void getAllAds() {
     firestore.collection("ads").get().then((res) {
       if (res.docs.length > 0) {
