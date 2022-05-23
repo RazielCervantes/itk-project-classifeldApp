@@ -3,8 +3,7 @@ import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import 'package:itk_project_classified_app/screens/edit-Profile.dart';
 import 'package:itk_project_classified_app/screens/my-Publish-Ads.dart';
 import 'package:get/get.dart';
-import 'package:itk_project_classified_app/controllers/ads.dart';
-import 'package:itk_project_classified_app/widgets/buttonssettings.dart';
+import 'package:itk_project_classified_app/controllers/profile.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key? key}) : super(key: key);
@@ -15,7 +14,16 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
-  final AdsController _adsController = Get.put(AdsController());
+  final ProfileController _profileController = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _profileController.getAccountInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,11 +57,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Obx(() =>
-                            Text(_myGlbControllers.userNameCtr.toString())),
+                        Obx(() => Text(_profileController.accountsInfo[0] ==
+                                null
+                            ? "user name"
+                            : _profileController.accountsInfo[0]["fullname"])),
                         Obx(
                           () => Text(
-                            _myGlbControllers.userProfileMobileCtr.toString(),
+                            _profileController.accountsInfo[0] == null
+                                ? "user mobile"
+                                : _profileController.accountsInfo[0]["mobile"],
                             style: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -67,7 +79,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: TextStyle(color: Colors.orange),
                   ),
                   onPressed: () {
-                    Get.to(EditProfile());
+                    // Get.to(EditProfile());
+                    print("click");
+                    Get.to(EditProfile(
+                      userEmail: _profileController.accountsInfo[0]["email"],
+                      userNumber: _profileController.accountsInfo[0]["mobile"],
+                      userfullName: _profileController.accountsInfo[0]
+                          ["fullname"],
+                      userid: _profileController.accountsInfo[0]["userId"],
+                    ));
                   },
                 ),
               ],

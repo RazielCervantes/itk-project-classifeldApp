@@ -67,7 +67,15 @@ class _newUserState extends State<newUser> {
   }
 
   inserToFirestore() {
-    FirebaseFirestore.instance.collection("accounts").add({
+    // FirebaseFirestore.instance.collection("accounts").add({
+    //   "userId": FirebaseAuth.instance.currentUser!.uid,
+    //   "fullname": _newUserNameCtrl.text,
+    //   "email": _newUserEmailCtrl.text,
+    //   "mobile": _newUserNumberCtrl.text,
+    //   "createdAt": FieldValue.serverTimestamp(),
+    // }
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection("accounts").doc(uid).set({
       "userId": FirebaseAuth.instance.currentUser!.uid,
       "fullname": _newUserNameCtrl.text,
       "email": _newUserEmailCtrl.text,

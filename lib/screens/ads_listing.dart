@@ -12,6 +12,7 @@ import 'package:itk_project_classified_app/screens/check-Product.dart';
 import 'package:itk_project_classified_app/screens/my-Publish-Ads.dart';
 import 'package:itk_project_classified_app/screens/page-Settings.dart';
 import 'package:itk_project_classified_app/util/constans.dart';
+import 'package:itk_project_classified_app/controllers/profile.dart';
 
 class ListOfApps extends StatefulWidget {
   ListOfApps({
@@ -53,6 +54,7 @@ class _ListOfAppsState extends State<ListOfApps> {
     // getAdsInfo();
     _myGlbControllers.getProfileInfo();
     _adsController.getAllAds();
+
     // TODO: implement initState
     super.initState();
   }
@@ -84,108 +86,104 @@ class _ListOfAppsState extends State<ListOfApps> {
           ],
           automaticallyImplyLeading: false,
         ),
-        body: Center(
-          child: Obx(
-            (() => GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
-                      childAspectRatio: 0.8),
-                  // itemCount: _publishedAds == null ? 0 : _publishedAds["data"].length,
-                  // itemBuilder: (BuildContext context, int index) {
-                  //   return Padding(
-                  //       padding: const EdgeInsets.all(4.0),
-                  //       child: buildItemGrid(_publishedAds["data"][index]));
-                  // },
+        body: Obx(
+          (() => GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 4.0,
+                    crossAxisSpacing: 4.0,
+                    childAspectRatio: 0.8),
+                // itemCount: _publishedAds == null ? 0 : _publishedAds["data"].length,
+                // itemBuilder: (BuildContext context, int index) {
+                //   return Padding(
+                //       padding: const EdgeInsets.all(4.0),
+                //       child: buildItemGrid(_publishedAds["data"][index]));
+                // },
 
-                  itemCount: _adsController.ads.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () async {
-                        Get.to(CheckProd(
-                          product: _adsController.ads[index]["title"],
-                          cost: _adsController.ads[index]["Price"],
-                          imageUri: _defaulImg,
-                          // time: _adsController.ads[index]["Createat"],
-                          time: DateTime.parse(_adsController.ads[index]
-                                      ["Createat"]
-                                  .toDate()
-                                  .toString())
-                              .toString(),
-                          description: _adsController.ads[index]["Description"],
-                          sellerContact: _adsController.ads[index]["Mobile"],
-                          sellername: _adsController.ads[index]["uid"],
-                          // sellercontact: _publishedAds["mobile"],
-                        ));
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            color: Colors.black,
-                            child: Image.network(
-                              // _publishedAds["images"][0] == null ||
-                              //         _publishedAds["images"][0] == ""
-                              //     ? _defaulImg
-                              //     : _publishedAds["images"][0],
+                itemCount: _adsController.ads.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () async {
+                      Get.to(CheckProd(
+                        product: _adsController.ads[index]["title"],
+                        cost: _adsController.ads[index]["Price"],
+                        imageUri: _defaulImg,
+                        // time: _adsController.ads[index]["Createat"],
+                        time: DateTime.parse(_adsController.ads[index]
+                                    ["Createat"]
+                                .toDate()
+                                .toString())
+                            .toString(),
+                        description: _adsController.ads[index]["Description"],
+                        sellerContact: _adsController.ads[index]["Mobile"],
+                        sellername: _adsController.ads[index]["uid"],
+                        // sellercontact: _publishedAds["mobile"],
+                      ));
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          color: Colors.black,
+                          child: Image.network(
+                            // _publishedAds["images"][0] == null ||
+                            //         _publishedAds["images"][0] == ""
+                            //     ? _defaulImg
+                            //     : _publishedAds["images"][0],
 
-                              _defaulImg,
-                              fit: BoxFit.fitHeight,
+                            _defaulImg,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            height: 80,
+                            color: Colors.black.withOpacity(0.5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _adsController.ads[index]["title"],
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        "\$ " +
+                                            _adsController.ads[index]["Price"],
+                                        style: const TextStyle(
+                                            color: Colors.orange,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Container(
-                              height: 80,
-                              color: Colors.black.withOpacity(0.5),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Flexible(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _adsController.ads[index]["title"],
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        Text(
-                                          "\$ " +
-                                              _adsController.ads[index]
-                                                  ["Price"],
-                                          style: const TextStyle(
-                                              color: Colors.orange,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                )),
-          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              )),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add_a_photo),

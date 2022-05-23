@@ -11,9 +11,21 @@ import '../util/constans.dart';
 import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import 'package:itk_project_classified_app/widgets/custom_texfield.dart';
 import 'package:itk_project_classified_app/screens/login-screen-screen.dart';
+import 'package:itk_project_classified_app/controllers/profile.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({Key? key}) : super(key: key);
+  final String userfullName;
+  final String userEmail;
+  final String userNumber;
+  final String userid;
+
+  EditProfile(
+      {Key? key,
+      required this.userEmail,
+      required this.userNumber,
+      required this.userfullName,
+      required this.userid})
+      : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -22,14 +34,16 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
 
+  final ProfileController _profileController = Get.put(ProfileController());
+
   late final TextEditingController _editUserNameCtrl =
-      TextEditingController(text: _myGlbControllers.userNameCtr.toString());
+      TextEditingController(text: this.widget.userfullName);
 
-  late final TextEditingController _editUserEmailCtrl = TextEditingController(
-      text: _myGlbControllers.userProfileEmailCtr.toString());
+  late final TextEditingController _editUserEmailCtrl =
+      TextEditingController(text: this.widget.userEmail);
 
-  late final TextEditingController _editUserNumberCtrl = TextEditingController(
-      text: _myGlbControllers.userProfileMobileCtr.toString());
+  late final TextEditingController _editUserNumberCtrl =
+      TextEditingController(text: this.widget.userNumber);
 
   late String _imageURL = _myGlbControllers.userProfileImagectr.toString();
 
@@ -160,24 +174,35 @@ class _EditProfileState extends State<EditProfile> {
                             fontWeight: FontWeight.w600),
                       ),
                       onPressed: () async {
-                        var saveChanges = await profileEdit();
-                        if (saveChanges["status"] = true) {
-                          _myGlbControllers.getProfileInfo();
-                          showDialog(
-                              context: context,
-                              builder: (contex) => AlertDialog(
-                                    title: Text("Alert"),
-                                    content: Text("User profile updated "),
-                                    actions: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.pop(contex);
-                                        },
-                                      )
-                                    ],
-                                  ));
-                        }
+                        // _profileController.UpdateMyProfile(
+                        //     uid,
+                        //     _editUserNameCtrl.text,
+                        //     _editUserEmailCtrl.text,
+                        //     _editUserNumberCtrl.text);
+                        // var saveChanges = await profileEdit();
+                        // if (saveChanges["status"] = true) {
+                        //   _myGlbControllers.getProfileInfo();
+                        //   showDialog(
+                        //       context: context,
+                        //       builder: (contex) => AlertDialog(
+                        //             title: Text("Alert"),
+                        //             content: Text("User profile updated "),
+                        //             actions: <Widget>[
+                        //               IconButton(
+                        //                 icon: Icon(Icons.close),
+                        //                 onPressed: () {
+                        //                   Navigator.pop(contex);
+                        //                 },
+                        //               )
+                        //             ],
+                        //           ));
+                        // }
+
+                        _profileController.UpdateMyProfile(
+                            widget.userid,
+                            _editUserNameCtrl.text,
+                            _editUserEmailCtrl.text,
+                            _editUserNumberCtrl.text);
                       },
                       style:
                           ElevatedButton.styleFrom(primary: Colors.orange[900]),
