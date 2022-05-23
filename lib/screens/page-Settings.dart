@@ -48,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Obx(
                         () => CircleAvatar(
                           backgroundImage: NetworkImage(
-                              _myGlbControllers.userProfileImagectr.value),
+                              _profileController.accountsInfo[0]["imageURL"]),
                           radius: 24,
                         ),
                       ),
@@ -87,6 +87,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       userfullName: _profileController.accountsInfo[0]
                           ["fullname"],
                       userid: _profileController.accountsInfo[0]["userId"],
+                      profileImage: _profileController.accountsInfo[0]
+                          ["imageURL"],
                     ));
                   },
                 ),

@@ -20,7 +20,9 @@ class MyGlbControllers extends GetxController {
   RxString userIdCtrl = 'user id'.obs;
   RxString userProfileEmailCtr = 'user email'.obs;
   RxString userProfileMobileCtr = 'user mobile'.obs;
-  RxString userProfileImagectr = 'user image'.obs;
+  RxString userProfileImagectr =
+      'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'
+          .obs;
   RxString userProfileDatectr = 'user date'.obs;
 
   Future getProfileInfo() async {

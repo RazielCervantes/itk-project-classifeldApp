@@ -9,6 +9,7 @@ import 'package:itk_project_classified_app/controllers/ads.dart';
 import 'package:itk_project_classified_app/screens/My-Publish-Ads.dart';
 import 'package:itk_project_classified_app/screens/create-Ad.dart';
 import 'package:itk_project_classified_app/screens/check-Product.dart';
+import 'package:itk_project_classified_app/controllers/profile.dart';
 import 'package:itk_project_classified_app/screens/my-Publish-Ads.dart';
 import 'package:itk_project_classified_app/screens/page-Settings.dart';
 import 'package:itk_project_classified_app/util/constans.dart';
@@ -29,6 +30,7 @@ class _ListOfAppsState extends State<ListOfApps> {
   final MyGlbControllers _myGlbControllers = Get.put(MyGlbControllers());
   final AdsController _adsController = Get.put(AdsController());
   final box = GetStorage();
+  final ProfileController _profileController = Get.put(ProfileController());
 
 //request the ads published
 
@@ -54,7 +56,7 @@ class _ListOfAppsState extends State<ListOfApps> {
     // getAdsInfo();
     _myGlbControllers.getProfileInfo();
     _adsController.getAllAds();
-
+    _profileController.getAccountInfo();
     // TODO: implement initState
     super.initState();
   }
@@ -80,7 +82,7 @@ class _ListOfAppsState extends State<ListOfApps> {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Obx(() => CircleAvatar(
                         backgroundImage: NetworkImage(
-                            _myGlbControllers.userProfileImagectr.value),
+                            _profileController.accountsInfo[0]["imageURL"]),
                       )),
                 )),
           ],

@@ -49,6 +49,7 @@ class _AdsState extends State<Ads> {
   void initState() {
     // getAdsInfo();
     _adsController.getMyAds();
+
     // TODO: implement initState
     super.initState();
   }

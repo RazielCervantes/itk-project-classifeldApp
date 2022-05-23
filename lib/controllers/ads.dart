@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:itk_project_classified_app/screens/My-Publish-Ads.dart';
+import 'package:itk_project_classified_app/screens/ads_listing.dart';
 
 class AdsController extends GetxController {
   RxBool wasSuccess = false.obs;
@@ -20,7 +22,7 @@ class AdsController extends GetxController {
       "Createat": FieldValue.serverTimestamp(),
       "uid": auth.currentUser!.uid,
     }).then((value) {
-      wasSuccess = true as RxBool;
+      Get.to(ListOfApps());
     }).catchError((e) {
       print(e);
     });
@@ -52,7 +54,7 @@ class AdsController extends GetxController {
         });
         print(tmp);
         ads.assignAll(tmp);
-      }
+      } else {}
     });
   }
 
@@ -62,6 +64,9 @@ class AdsController extends GetxController {
       "Price": price,
       "Mobile": mobile,
       "Description": description,
+    }).then((value) {
+      print("Success");
+      Get.to(Ads());
     });
   }
 }

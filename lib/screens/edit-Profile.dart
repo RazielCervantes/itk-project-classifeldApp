@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -18,13 +20,15 @@ class EditProfile extends StatefulWidget {
   final String userEmail;
   final String userNumber;
   final String userid;
+  final String profileImage;
 
   EditProfile(
       {Key? key,
       required this.userEmail,
       required this.userNumber,
       required this.userfullName,
-      required this.userid})
+      required this.userid,
+      required this.profileImage})
       : super(key: key);
 
   @override
@@ -45,62 +49,91 @@ class _EditProfileState extends State<EditProfile> {
   late final TextEditingController _editUserNumberCtrl =
       TextEditingController(text: this.widget.userNumber);
 
-  late String _imageURL = _myGlbControllers.userProfileImagectr.toString();
+  late String _imageURL = widget.profileImage;
+  // var _imageURL =
+  //     "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
 
   final box = GetStorage();
 
-  PickImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      //upload image
-      var request = http.MultipartRequest(
-          "POST", Uri.parse(constans().apiURl + '/upload/profile'));
-      request.files
-          .add(await http.MultipartFile.fromPath('avatar', image.path));
-      var res = await request.send();
-      var respData = await res.stream.toBytes();
-      var respStr = String.fromCharCodes(respData);
-      var jsonObj = json.decode(respStr);
-      print(jsonObj["data"]["path"]);
-      setState(() {
-        _imageURL = jsonObj["data"]["path"];
-      });
-    } else {
-      print("no image picked");
-    }
-  }
+  // PickImage() async {
+  //   var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //     //upload image
+  //     var request = http.MultipartRequest(
+  //         "POST", Uri.parse(constans().apiURl + '/upload/profile'));
+  //     request.files
+  //         .add(await http.MultipartFile.fromPath('avatar', image.path));
+  //     var res = await request.send();
+  //     var respData = await res.stream.toBytes();
+  //     var respStr = String.fromCharCodes(respData);
+  //     var jsonObj = json.decode(respStr);
+  //     print(jsonObj["data"]["path"]);
+  //     setState(() {
+  //       _imageURL = jsonObj["data"]["path"];
+  //     });
+  //   } else {
+  //     print("no image picked");
+  //   }
+  // }
 
-  Future profileEdit() async {
-    try {
-      var token = box.read("token");
-      var respon = await http.patch(
-        Uri.parse(constans().apiURl + '/user/'),
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token'
-        },
-        body: jsonEncode({
-          "name": _editUserNameCtrl.text,
-          "email": _editUserEmailCtrl.text,
-          "mobile": _editUserNumberCtrl.text,
-          "imgURL": _imageURL,
-        }),
-      );
+  // Future profileEdit() async {
+  //   try {
+  //     var token = box.read("token");
+  //     var respon = await http.patch(
+  //       Uri.parse(constans().apiURl + '/user/'),
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         'Accept': 'application/json',
+  //         'Authorization': 'Bearer $token'
+  //       },
+  //       body: jsonEncode({
+  //         "name": _editUserNameCtrl.text,
+  //         "email": _editUserEmailCtrl.text,
+  //         "mobile": _editUserNumberCtrl.text,
+  //         "imgURL": _imageURL,
+  //       }),
+  //     );
 
-      var _request = jsonDecode(respon.body);
-      print(_request);
+  //     var _request = jsonDecode(respon.body);
+  //     print(_request);
 
-      return _request;
-    } catch (error) {
-      return error;
-    }
-  }
+  //     return _request;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
   void logout() {
     FirebaseAuth.instance.signOut().then((value) {
       Get.offAll(Loging());
     });
+  }
+
+  uploadProfilePicture() async {
+    var filePath = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (filePath!.path.length != 0) {
+      var imageFile = File(filePath.path);
+      FirebaseStorage.instance
+          .ref()
+          .child("uploads")
+          .child(FirebaseAuth.instance.currentUser!.uid)
+          .putFile(imageFile)
+          .then((res) {
+        print("uploaded");
+        res.ref.getDownloadURL().then((url) {
+          setState(() {
+            _imageURL = url;
+          });
+          FirebaseFirestore.instance
+              .collection("accounts")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({"imageURL": _imageURL});
+        });
+      }).catchError((e) {
+        print("Error");
+        print(e);
+      });
+    }
   }
 
   @override
@@ -126,23 +159,32 @@ class _EditProfileState extends State<EditProfile> {
                   alignment: Alignment.topCenter,
                   child: Padding(
                     padding: EdgeInsets.all(22),
-                    child: Obx(
-                      () => GestureDetector(
-                          onTap: () {
-                            PickImage();
-                          },
-                          child: _imageURL != ""
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(_imageURL),
-                                  radius: 60.0,
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      _myGlbControllers
-                                          .userProfileImagectr.value),
-                                  radius: 60.0,
-                                )),
-                    ),
+                    child: GestureDetector(
+                        onTap: () {
+                          uploadProfilePicture();
+                        },
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(_imageURL),
+                          radius: 60.0,
+                        )),
+
+                    // child: Obx(
+                    //   () => GestureDetector(
+                    //       onTap: () {
+                    //         uploadProfilePicture();
+                    //       },
+                    //       child: _imageURL != ""
+                    //           ? CircleAvatar(
+                    //               backgroundImage: NetworkImage(_imageURL),
+                    //               radius: 60.0,
+                    //             )
+                    //           : CircleAvatar(
+                    //               backgroundImage: NetworkImage(
+                    //                   _myGlbControllers
+                    //                       .userProfileImagectr.value),
+                    //               radius: 60.0,
+                    //             )),
+                    // ),
                   ),
                 ),
                 myTextField(

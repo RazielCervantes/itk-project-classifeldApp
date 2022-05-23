@@ -6,6 +6,8 @@ import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../screens/ads_listing.dart';
+
 class ProfileController extends GetxController {
   List accountsInfo = [].obs;
 
@@ -39,6 +41,9 @@ class ProfileController extends GetxController {
       "fullname": name,
       "email": email,
       "mobile": mobile,
+    }).then((value) {
+      print("update Success");
+      Get.to(ListOfApps());
     });
   }
 }
