@@ -1,10 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:itk_project_classified_app/controllers/ads.dart';
 import 'package:itk_project_classified_app/controllers/mycontroller.dart';
 import '../util/constans.dart';
@@ -36,26 +41,55 @@ class _CreateAdState extends State<CreateAd> {
 
   late bool wasadded = _adsController.wasSuccess as bool;
 
-  PickMultipleImages() async {
-    var images = await ImagePicker().pickMultiImage();
-    if (images!.isNotEmpty) {
-      //upload images
-      var request = http.MultipartRequest(
-          "POST", Uri.parse(constans().apiURl + '/upload/photos'));
-      images.forEach((images) async {
-        request.files
-            .add(await http.MultipartFile.fromPath('photos', images.path));
-      });
-      var res = await request.send();
-      var respData = await res.stream.toBytes();
-      var respStr = String.fromCharCodes(respData);
-      var jsonObj = json.decode(respStr);
-      print(jsonObj["data"]["path"]);
+  var _imageURL;
+
+  var _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  Random _rnd = Random();
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+  // PickMultipleImages() async {
+  //   var images = await ImagePicker().pickMultiImage();
+  //   if (images!.isNotEmpty) {
+  //     //upload images
+  //     var request = http.MultipartRequest(
+  //         "POST", Uri.parse(constans().apiURl + '/upload/photos'));
+  //     images.forEach((images) async {
+  //       request.files
+  //           .add(await http.MultipartFile.fromPath('photos', images.path));
+  //     });
+  //     var res = await request.send();
+  //     var respData = await res.stream.toBytes();
+  //     var respStr = String.fromCharCodes(respData);
+  //     var jsonObj = json.decode(respStr);
+  //     print(jsonObj["data"]["path"]);
+  //     setState(() {
+  //       _imagesURL = (jsonObj["data"]["path"]);
+  //     });
+  //   } else {
+  //     print("no images picked");
+  //   }
+  // }
+
+  uploadImage() async {
+    var filePath = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (filePath!.path.length != 0) {
+      File file = File(filePath.path);
+      var storageRef = await FirebaseStorage.instance
+          .ref()
+          .child("uploads")
+          .child(getRandomString(12))
+          .putFile(file);
+
+      var uploadedURL = await storageRef.ref.getDownloadURL();
       setState(() {
-        _imagesURL = (jsonObj["data"]["path"]);
+        _imageURL = uploadedURL;
       });
-    } else {
-      print("no images picked");
+      FirebaseFirestore.instance
+          .collection("ads")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({"imageURL": _imageURL});
     }
   }
 
@@ -117,7 +151,8 @@ class _CreateAdState extends State<CreateAd> {
                     child: _imagesURL != null
                         ? GestureDetector(
                             onTap: () {
-                              PickMultipleImages();
+                              // PickMultipleImages();
+                              uploadImage();
                             },
                             child: Container(
                                 height: 150,
@@ -132,7 +167,8 @@ class _CreateAdState extends State<CreateAd> {
                                   side: BorderSide(
                                       width: 1.0, color: Colors.grey)),
                               onPressed: () {
-                                PickMultipleImages();
+                                // PickMultipleImages();
+                                uploadImage();
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -208,7 +244,8 @@ class _CreateAdState extends State<CreateAd> {
                             _newAdTitleCtrl.text,
                             _newAdPriceCtrl.text,
                             _newAdNumberCtrl.text,
-                            _newAdDescriptionCtrl.text);
+                            _newAdDescriptionCtrl.text,
+                            _imageURL);
 
                         // setState(() {
                         //   if (wasadded == true) {

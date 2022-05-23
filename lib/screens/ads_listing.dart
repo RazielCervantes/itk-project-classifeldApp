@@ -115,8 +115,9 @@ class _ListOfAppsState extends State<ListOfApps> {
                       Get.to(CheckProd(
                         product: _adsController.ads[index]["title"],
                         cost: _adsController.ads[index]["Price"],
-                        imageUri: _defaulImg,
-                        // time: _adsController.ads[index]["Createat"],
+                        imageUri: _adsController.ads[index]["imageURL"] == null
+                            ? _defaulImg
+                            : _adsController.ads[index]["imageURL"],
                         time: DateTime.parse(_adsController.ads[index]
                                     ["Createat"]
                                 .toDate()
@@ -134,12 +135,9 @@ class _ListOfAppsState extends State<ListOfApps> {
                           width: double.infinity,
                           color: Colors.black,
                           child: Image.network(
-                            // _publishedAds["images"][0] == null ||
-                            //         _publishedAds["images"][0] == ""
-                            //     ? _defaulImg
-                            //     : _publishedAds["images"][0],
-
-                            _defaulImg,
+                            _adsController.ads[index]["imageURL"] == null
+                                ? _defaulImg
+                                : _adsController.ads[index]["imageURL"],
                             fit: BoxFit.fitHeight,
                           ),
                         ),

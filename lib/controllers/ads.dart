@@ -14,7 +14,7 @@ class AdsController extends GetxController {
   var firestore = FirebaseFirestore.instance;
   var auth = FirebaseAuth.instance;
 
-  void addNewAd(title, price, mobile, descrp) {
+  void addNewAd(title, price, mobile, descrp, adImage) {
     firestore.collection("ads").add({
       "title": title,
       "Price": price,
@@ -22,6 +22,7 @@ class AdsController extends GetxController {
       "Description": descrp,
       "Createat": FieldValue.serverTimestamp(),
       "uid": auth.currentUser!.uid,
+      "imageURL": adImage,
     }).then((value) {
       Get.to(ListOfApps());
     }).catchError((e) {
