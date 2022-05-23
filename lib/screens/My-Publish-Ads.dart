@@ -85,7 +85,9 @@ class _AdsState extends State<Ads> {
                       productCost: _adsController.ads[index]["Price"],
                       number: _adsController.ads[index]["Mobile"],
                       productDescrip: _adsController.ads[index]["Description"],
-                      // addImages: myads["images"],
+                      addImages: _adsController.ads[index]["imageURL"] == null
+                          ? _defaulImg
+                          : _adsController.ads[index]["imageURL"],
                       productid: _adsController.ads[index]["id"],
                     ));
                   },
@@ -100,7 +102,10 @@ class _AdsState extends State<Ads> {
                           SizedBox(
                             width: 100,
                             height: 100,
-                            child: Image.network(_defaulImg),
+                            child: Image.network(
+                                _adsController.ads[index]["imageURL"] == null
+                                    ? _defaulImg
+                                    : _adsController.ads[index]["imageURL"]),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

@@ -21,7 +21,7 @@ class EditAd extends StatefulWidget {
   final String productCost;
   final String number;
   final String productDescrip;
-  // final List addImages;
+  final String addImages;
   final String productid;
   EditAd({
     Key? key,
@@ -29,7 +29,7 @@ class EditAd extends StatefulWidget {
     required this.productCost,
     required this.number,
     required this.productDescrip,
-    // required this.addImages,
+    required this.addImages,
     required this.productid,
   }) : super(key: key);
 
