@@ -74,7 +74,8 @@ class _AdsState extends State<Ads> {
               //       padding: const EdgeInsets.all(4.0),
               //       child: buildproduct(myads["data"][index]));
 
-              itemCount: _adsController.ads.length,
+              itemCount:
+                  _adsController.ads == null ? 0 : _adsController.ads.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {

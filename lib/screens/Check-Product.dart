@@ -4,11 +4,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:itk_project_classified_app/screens/ads_listing.dart';
 import 'package:itk_project_classified_app/screens/check-Image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CheckProd extends StatelessWidget {
+class CheckProd extends StatefulWidget {
   final String product;
   final String cost;
   final time;
@@ -28,6 +31,11 @@ class CheckProd extends StatelessWidget {
     required this.sellername,
   }) : super(key: key);
 
+  @override
+  State<CheckProd> createState() => _CheckProdState();
+}
+
+class _CheckProdState extends State<CheckProd> {
   _openUrl(String urlString) async {
     Uri url = Uri.parse(urlString);
     if (await canLaunchUrl(url)) {
@@ -37,9 +45,41 @@ class CheckProd extends StatelessWidget {
     }
   }
 
+  var firestore = FirebaseFirestore.instance;
+
+  var auth = FirebaseAuth.instance;
+
+  List info = [];
+
+  void getsellersName() {
+    firestore
+        .collection("accounts")
+        .where('userId', isEqualTo: widget.sellername)
+        .get()
+        .then((res) {
+      if (res.docs.length > 0) {
+        var tmp = [];
+        res.docs.forEach((ads) {
+          tmp.add({"id": ads.id, ...ads.data()});
+        });
+        print(tmp);
+        setState(() {
+          info.assignAll(tmp);
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getsellersName();
+  }
+
   @override
   Widget build(BuildContext context) {
-    DateTime tims = DateTime.parse(time);
+    DateTime tims = DateTime.parse(widget.time);
 
     return SafeArea(
       child: Scaffold(
@@ -60,12 +100,12 @@ class CheckProd extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "$product",
+                  "${widget.product}",
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 32),
                 ),
                 SizedBox(height: 8.0),
                 Text(
-                  "$cost",
+                  "${widget.cost}",
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 14,
@@ -80,13 +120,13 @@ class CheckProd extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CheckImage(imageProd: imageUri)));
+                                  CheckImage(imageProd: widget.imageUri)));
                     },
                     child: Container(
                       height: 260,
                       width: double.infinity,
                       child: Image.network(
-                        imageUri,
+                        widget.imageUri,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -104,7 +144,9 @@ class CheckProd extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               // child: Text("$sellername"),
-                              child: Text("All"),
+                              child: Text(info.isEmpty
+                                  ? "seller name"
+                                  : info[0]["fullname"]),
                             )
                           ],
                         ),
@@ -130,7 +172,7 @@ class CheckProd extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 12),
                   child: Text(
-                    "$description",
+                    "${widget.description}",
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
@@ -146,7 +188,7 @@ class CheckProd extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                     onPressed: () async {
-                      _openUrl("tel: $sellerContact");
+                      _openUrl("tel: ${widget.sellerContact}");
                     },
                     style:
                         ElevatedButton.styleFrom(primary: Colors.orange[900]),

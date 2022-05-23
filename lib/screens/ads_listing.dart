@@ -125,7 +125,6 @@ class _ListOfAppsState extends State<ListOfApps> {
                         description: _adsController.ads[index]["Description"],
                         sellerContact: _adsController.ads[index]["Mobile"],
                         sellername: _adsController.ads[index]["uid"],
-                        // sellercontact: _publishedAds["mobile"],
                       ));
                     },
                     child: Stack(

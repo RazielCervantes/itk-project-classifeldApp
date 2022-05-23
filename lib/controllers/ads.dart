@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:itk_project_classified_app/screens/My-Publish-Ads.dart';
@@ -30,7 +31,7 @@ class AdsController extends GetxController {
 
   uploadAdImages() async {}
 
-  void getAllAds() {
+  void getAllAds() async {
     firestore.collection("ads").get().then((res) {
       if (res.docs.length > 0) {
         var tmp = [];
